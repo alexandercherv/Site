@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Garden School - Космічне навчання</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="logo.svg" alt="Smart Garden School Logo" class="logo-image">
+                    <span class="school-name">Smart Garden School</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Головна</a></li>
+                    <li><a href="#courses">Курси</a></li>
+                    <li><a href="#subscriptions">Абонементи</a></li>
+                    <li><a href="#about">Про нас</a></li>
+                    <li><a href="#contact">Контакти</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Вітаємо у Smart Garden School!</h1>
+                <p>Розвиваємо мислення, як ростуть дерева — крок за кроком!</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">Космонавтів</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Курси</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Успішність</span>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToForm()">Приєднатися до місії</button>
+            </div>
+            <div class="hero-image">
+                <div class="floating-characters">
+                    <div class="character brainy">
+                        <div class="character-body"></div>
+                        <div class="character-eyes"></div>
+                        <div class="character-mouth"></div>
+                        <div class="character-antenna"></div>
+                    </div>
+                    <div class="character smart-puma">
+                        <div class="character-body"></div>
+                        <div class="character-eyes"></div>
+                        <div class="character-mouth"></div>
+                        <div class="character-antenna"></div>
+                    </div>
+                    <div class="character cat-hero">
+                        <div class="character-body"></div>
+                        <div class="character-eyes"></div>
+                        <div class="character-mouth"></div>
+                        <div class="character-cape"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="planets">
+            <div class="planet planet-1"></div>
+            <div class="planet planet-2"></div>
+            <div class="planet planet-3"></div>
+            <div class="planet planet-4"></div>
+            <div class="planet planet-5"></div>
+        </div>
+        <div class="stars"></div>
+        <div class="rockets">
+            <div class="rocket rocket-1"></div>
+            <div class="rocket rocket-2"></div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="courses">
+        <div class="container">
+            <h2>Наші космічні курси</h2>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Ментальна арифметика</h3>
+                    <p>Навчимося швидко рахувати в розумі разом з Брейні та визволимо світ від математичних загадок</p>
+                    <div class="course-details">
+                        <span><i class="fas fa-clock"></i> 3 місяці</span>
+                        <span><i class="fas fa-users"></i> 150 космонавтів</span>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3>Швидкочитання</h3>
+                    <p>Опануємо техніки швидкого читання та засвоєння інформації для космічних місій</p>
+                    <div class="course-details">
+                        <span><i class="fas fa-clock"></i> 2 місяці</span>
+                        <span><i class="fas fa-users"></i> 120 космонавтів</span>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Підготовка до школи</h3>
+                    <p>Підготуємо маленьких космонавтів до шкільного польоту, розвиваючи всі необхідні навички</p>
+                    <div class="course-details">
+                        <span><i class="fas fa-clock"></i> 4 місяці</span>
+                        <span><i class="fas fa-users"></i> 180 космонавтів</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscriptions Section -->
+    <section id="subscriptions" class="subscriptions">
+        <div class="container">
+            <h2>Космічні абонементи</h2>
+            <p class="subscriptions-subtitle">Оберіть найзручніший абонемент для вашого космонавта</p>
+            <div class="subscriptions-grid">
+                <div class="subscription-card" data-price="7200" data-lessons="12">
+                    <div class="subscription-badge">Популярний</div>
+                    <div class="subscription-header">
+                        <h3>Абонемент на 12 занять</h3>
+                        <div class="subscription-price">
+                            <span class="price-amount">7 200</span>
+                            <span class="price-currency">грн</span>
+                        </div>
+                        <p class="price-per-lesson">600 грн/заняття</p>
+                    </div>
+                    <div class="subscription-features">
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>12 космічних занять</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Навчальні матеріали</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Підтримка викладачів</span>
+                        </div>
+                    </div>
+                    <button class="subscription-button" onclick="selectSubscription(12, 7200)">Обрати абонемент</button>
+                </div>
+                <div class="subscription-card featured" data-price="14200" data-lessons="24">
+                    <div class="subscription-badge best-value">Найвигідніший</div>
+                    <div class="subscription-header">
+                        <h3>Абонемент на 24 заняття</h3>
+                        <div class="subscription-price">
+                            <span class="price-amount">14 200</span>
+                            <span class="price-currency">грн</span>
+                        </div>
+                        <p class="price-per-lesson">592 грн/заняття</p>
+                        <p class="subscription-save">Економія 200 грн</p>
+                    </div>
+                    <div class="subscription-features">
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>24 космічних заняття</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Навчальні матеріали</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Підтримка викладачів</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Додаткові матеріали</span>
+                        </div>
+                    </div>
+                    <button class="subscription-button" onclick="selectSubscription(24, 14200)">Обрати абонемент</button>
+                </div>
+                <div class="subscription-card" data-price="28800" data-lessons="48">
+                    <div class="subscription-badge">Максимальний</div>
+                    <div class="subscription-header">
+                        <h3>Абонемент на 48 занять</h3>
+                        <div class="subscription-price">
+                            <span class="price-amount">28 800</span>
+                            <span class="price-currency">грн</span>
+                        </div>
+                        <p class="price-per-lesson">600 грн/заняття</p>
+                    </div>
+                    <div class="subscription-features">
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>48 космічних занять</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Навчальні матеріали</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Підтримка викладачів</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Додаткові матеріали</span>
+                        </div>
+                        <div class="subscription-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Індивідуальні консультації</span>
+                        </div>
+                    </div>
+                    <button class="subscription-button" onclick="selectSubscription(48, 28800)">Обрати абонемент</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Про Smart Garden School</h2>
+                    <p>Ми - інноваційна онлайн школа, де кожен учень стає космонавтом знань. Ми віримо, що кожна дитина має всередині свій сад розуму й талантів. І завдання освіти не просто навчити, а допомогти цьому саду розквітнути.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-rocket"></i>
+                            <span>Космічні методики навчання</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-star"></i>
+                            <span>Досвідчені космонавти-викладачі</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-moon"></i>
+                            <span>Гнучкий графік космічних занять</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-satellite"></i>
+                            <span>Підтримка навчальних матеріалів</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="logo.svg" alt="Smart Garden School Logo Large" class="logo-large-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Приєднатися до космічної місії</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Зв'яжіться з нами</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-satellite"></i>
+                        <span>schoolsmartgarden@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Космічний простір, Україна</span>
+                    </div>
+                </div>
+                <form class="contact-form" id="applicationForm" action="https://formspree.io/f/mwpgvwdk" method="POST">
+                    <div class="form-group">
+                        <label for="name">Повне ім'я космонавта *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="course">Обрати космічний курс *</label>
+                        <select id="course" name="course" required>
+                            <option value="">Оберіть курс</option>
+                            <option value="mental-arithmetic">Ментальна арифметика</option>
+                            <option value="speed-reading">Швидкочитання</option>
+                            <option value="school-preparation">Підготовка до школи</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subscription">Обрати абонемент або пробний урок *</label>
+                        <select id="subscription" name="subscription" required>
+                            <option value="">Оберіть варіант</option>
+                            <option value="trial-lesson">Перший пробний урок</option>
+                            <option value="12-lessons">Абонемент на 12 занять - 7 200 грн</option>
+                            <option value="24-lessons">Абонемент на 24 заняття - 14 200 грн</option>
+                            <option value="48-lessons">Абонемент на 48 занять - 28 800 грн</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Додаткова інформація про місію</label>
+                        <textarea id="message" name="message" rows="4"></textarea>
+                    </div>
+                    <input type="hidden" name="_subject" value="Нова заявка на навчання - Smart Garden School">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_format" value="plain">
+                    <button type="submit" class="submit-button">
+                        <span>Відправити заявку на місію</span>
+                        <i class="fas fa-rocket"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <img src="logo.svg" alt="Smart Garden School Logo" class="logo-image">
+                        <span class="school-name">Smart Garden School</span>
+                    </div>
+                    <p>Космічна освіта для розумних дітей</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Космічні посилання</h4>
+                    <ul>
+                        <li><a href="#home">Головна</a></li>
+                        <li><a href="#courses">Курси</a></li>
+                        <li><a href="#subscriptions">Абонементи</a></li>
+                        <li><a href="#about">Про нас</a></li>
+                        <li><a href="#contact">Контакти</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Соціальні мережі</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/smartgardenschool?igsh=eWUyY2JoeGRocnZ6&utm_source=qr" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Smart Garden School. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
