@@ -350,16 +350,30 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
     const navToggle = document.querySelector('.nav-toggle');
+    const body = document.body;
     
     if (navMenu && navToggle) {
+        const isActive = navMenu.classList.contains('active');
         navMenu.classList.toggle('active');
         navToggle.classList.toggle('active');
         
+        // Block body scroll when menu is open
+        if (!isActive) {
+            body.classList.add('menu-open');
+        } else {
+            body.classList.remove('menu-open');
+        }
+        
         // Close menu when clicking on a link
         navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+            // Remove existing listeners to avoid duplicates
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+            
+            newLink.addEventListener('click', () => {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
+                body.classList.remove('menu-open');
             });
         });
     }
@@ -368,9 +382,37 @@ function toggleMobileMenu() {
 // Initialize mobile menu
 document.addEventListener('DOMContentLoaded', () => {
     const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const body = document.body;
+    
     if (navToggle) {
         navToggle.addEventListener('click', toggleMobileMenu);
     }
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (navMenu && navMenu.classList.contains('active')) {
+            if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
+        }
+    });
+    
+    // Close menu on scroll
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', () => {
+        if (navMenu && navMenu.classList.contains('active')) {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (Math.abs(scrollTop - lastScrollTop) > 10) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
+            lastScrollTop = scrollTop;
+        }
+    });
 });
 
 // Add cosmic effects to characters
