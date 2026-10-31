@@ -3,64 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Garden School - Космічне навчання</title>
+    <title data-i18n="meta.title">Smart Garden School - Космічне навчання</title>
+    <meta name="description" data-i18n-content="meta.description" content="Онлайн-заняття з ментальної арифметики, швидкочитання та підготовки до школи у Smart Garden School. Запишіться на пробний урок.">
+    <meta property="og:title" data-i18n-content="meta.title" content="Smart Garden School - Космічне навчання">
+    <meta property="og:description" data-i18n-content="meta.description" content="Онлайн-заняття з ментальної арифметики, швидкочитання та підготовки до школи у Smart Garden School. Запишіться на пробний урок.">
+    <meta property="og:locale" content="uk_UA">
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content" data-i18n="skip">Перейти до вмісту</a>
     <!-- Header -->
     <header class="header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Головна навігація" data-i18n-aria-label="nav.label">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="logo.svg" alt="Smart Garden School Logo" class="logo-image">
+                    <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
                     <span class="school-name">Smart Garden School</span>
                 </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Головна</a></li>
-                    <li><a href="#courses">Курси</a></li>
-                    <li><a href="#subscriptions">Абонементи</a></li>
-                    <li><a href="#testimonials">Відгуки</a></li>
-                    <li><a href="#about">Про нас</a></li>
-                    <li><a href="#contact">Контакти</a></li>
+                <ul class="nav-menu" id="navigation-menu">
+                    <li><a href="#home" data-i18n="nav.home">Головна</a></li>
+                    <li><a href="#courses" data-i18n="nav.courses">Курси</a></li>
+                    <li><a href="#subscriptions" data-i18n="nav.subscriptions">Абонементи</a></li>
+                    <li><a href="#testimonials" data-i18n="nav.testimonials">Відгуки</a></li>
+                    <li><a href="#about" data-i18n="nav.about">Про нас</a></li>
+                    <li><a href="#contact" data-i18n="nav.contact">Контакти</a></li>
                 </ul>
-                <div class="nav-toggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="nav-actions">
+                    <div class="language-switcher" role="group" aria-label="Мова сайту" data-i18n-aria-label="language.label">
+                        <button type="button" data-language="uk" aria-label="Українська" aria-pressed="true">UK</button>
+                        <button type="button" data-language="en" aria-label="English" aria-pressed="false">EN</button>
+                    </div>
+                    <button class="nav-toggle" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="navigation-menu">
+                        <span></span><span></span><span></span>
+                    </button>
                 </div>
             </div>
         </nav>
     </header>
 
+    <main id="main-content" tabindex="-1">
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>Вітаємо у Smart Garden School!</h1>
-                <p>Розвиваємо мислення, як ростуть дерева — крок за кроком!</p>
+                <h1 data-i18n="hero.title">Вітаємо у Smart Garden School!</h1>
+                <p data-i18n="hero.description">Розвиваємо мислення, як ростуть дерева — крок за кроком!</p>
                 <div class="hero-stats">
                     <div class="stat">
                         <span class="stat-number">1000+</span>
-                        <span class="stat-label">Космонавтів</span>
+                        <span class="stat-label" data-i18n="hero.students">Космонавтів</span>
                     </div>
                     <div class="stat">
                         <span class="stat-number">95%</span>
-                        <span class="stat-label">Успішність</span>
+                        <span class="stat-label" data-i18n="hero.success">Успішність</span>
                     </div>
                     <div class="stat">
                         <span class="stat-number">97%</span>
-                        <span class="stat-label">Позитивних відгуків</span>
+                        <span class="stat-label" data-i18n="hero.reviews">Позитивних відгуків</span>
                     </div>
                     <div class="stat">
                         <span class="stat-number">20+</span>
-                        <span class="stat-label">Країн світу</span>
+                        <span class="stat-label" data-i18n="hero.countries">Країн світу</span>
                     </div>
                 </div>
-                <button class="cta-button" onclick="scrollToForm()">Записатися на заняття</button>
+                <button class="cta-button" onclick="scrollToForm()" data-i18n="hero.apply">Записатися на заняття</button>
             </div>
-            <div class="hero-image">
+            <div class="hero-image" aria-hidden="true">
                 <div class="floating-characters">
                     <div class="character brainy">
                         <div class="character-body"></div>
@@ -83,15 +96,15 @@
                 </div>
             </div>
         </div>
-        <div class="planets">
+        <div class="planets" aria-hidden="true">
             <div class="planet planet-1"></div>
             <div class="planet planet-2"></div>
             <div class="planet planet-3"></div>
             <div class="planet planet-4"></div>
             <div class="planet planet-5"></div>
         </div>
-        <div class="stars"></div>
-        <div class="rockets">
+        <div class="stars" aria-hidden="true"></div>
+        <div class="rockets" aria-hidden="true">
             <div class="rocket rocket-1"></div>
             <div class="rocket rocket-2"></div>
         </div>
@@ -100,36 +113,36 @@
     <!-- Courses Section -->
     <section id="courses" class="courses">
         <div class="container">
-            <h2>Наші космічні курси</h2>
+            <h2 data-i18n="courses.title">Наші космічні курси</h2>
             <div class="courses-grid">
                 <div class="course-card">
                     <div class="course-icon">
-                        <i class="fas fa-calculator"></i>
+                        <i aria-hidden="true" class="fas fa-calculator"></i>
                     </div>
-                    <h3>Ментальна арифметика</h3>
-                    <p>Навчимося швидко рахувати в розумі разом з Брейні та визволимо світ від математичних загадок</p>
+                    <h3 data-i18n="courses.mental">Ментальна арифметика</h3>
+                    <p data-i18n="courses.mentalDescription">Навчимося швидко рахувати в розумі разом з Брейні та визволимо світ від математичних загадок</p>
                     <div class="course-details">
-                        <span><i class="fas fa-users"></i> 150 учнів</span>
+                        <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.mentalStudents">150 учнів</span></span>
                     </div>
                 </div>
                 <div class="course-card">
                     <div class="course-icon">
-                        <i class="fas fa-book-reader"></i>
+                        <i aria-hidden="true" class="fas fa-book-reader"></i>
                     </div>
-                    <h3>Швидкочитання</h3>
-                    <p>Опануємо техніки швидкого читання та засвоєння інформації для космічних місій</p>
+                    <h3 data-i18n="courses.reading">Швидкочитання</h3>
+                    <p data-i18n="courses.readingDescription">Опануємо техніки швидкого читання та засвоєння інформації для космічних місій</p>
                     <div class="course-details">
-                        <span><i class="fas fa-users"></i> 120 учнів</span>
+                        <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.readingStudents">120 учнів</span></span>
                     </div>
                 </div>
                 <div class="course-card">
                     <div class="course-icon">
-                        <i class="fas fa-graduation-cap"></i>
+                        <i aria-hidden="true" class="fas fa-graduation-cap"></i>
                     </div>
-                    <h3>Підготовка до школи</h3>
-                    <p>Підготуємо маленьких космонавтів до шкільного польоту, розвиваючи всі необхідні навички</p>
+                    <h3 data-i18n="courses.preparation">Підготовка до школи</h3>
+                    <p data-i18n="courses.preparationDescription">Підготуємо маленьких космонавтів до шкільного польоту, розвиваючи всі необхідні навички</p>
                     <div class="course-details">
-                        <span><i class="fas fa-users"></i> 180 учнів</span>
+                        <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.preparationStudents">180 учнів</span></span>
                     </div>
                 </div>
             </div>
@@ -139,99 +152,99 @@
     <!-- Subscriptions Section -->
     <section id="subscriptions" class="subscriptions">
         <div class="container">
-            <h2>Наші абонементи</h2>
-            <p class="subscriptions-subtitle">Оберіть найзручніший абонемент для вашого космонавта</p>
+            <h2 data-i18n="packages.title">Наші абонементи</h2>
+            <p class="subscriptions-subtitle" data-i18n="packages.description">Оберіть найзручніший абонемент для вашого космонавта</p>
             <div class="subscriptions-grid">
                 <div class="subscription-card" data-price="7200" data-lessons="12">
-                    <div class="subscription-badge">Популярний</div>
+                    <div class="subscription-badge" data-i18n="packages.popular">Популярний</div>
                     <div class="subscription-header">
-                        <h3>Абонемент на 12 занять</h3>
+                        <h3 data-i18n="packages.12">Абонемент на 12 занять</h3>
                         <div class="subscription-price">
                             <span class="price-amount">7 200</span>
-                            <span class="price-currency">грн</span>
+                            <span class="price-currency" data-i18n="packages.currency">грн</span>
                         </div>
-                        <p class="price-per-lesson">600 грн/заняття</p>
+                        <p class="price-per-lesson" data-i18n="packages.rate600">600 грн/заняття</p>
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>12 космічних занять</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.lessons12">12 космічних занять</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Навчальні матеріали</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.materials">Навчальні матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Підтримка викладачів</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.support">Підтримка викладачів</span>
                         </div>
                     </div>
-                    <button class="subscription-button" onclick="selectSubscription(12, 7200)">Обрати абонемент</button>
+                    <button class="subscription-button" onclick="selectSubscription(12, 7200)" data-i18n="packages.choose">Обрати абонемент</button>
                 </div>
                 <div class="subscription-card featured" data-price="14200" data-lessons="24">
-                    <div class="subscription-badge best-value">Найвигідніший</div>
+                    <div class="subscription-badge best-value" data-i18n="packages.best">Найвигідніший</div>
                     <div class="subscription-header">
-                        <h3>Абонемент на 24 заняття</h3>
+                        <h3 data-i18n="packages.24">Абонемент на 24 заняття</h3>
                         <div class="subscription-price">
                             <span class="price-amount">14 200</span>
-                            <span class="price-currency">грн</span>
+                            <span class="price-currency" data-i18n="packages.currency">грн</span>
                         </div>
-                        <p class="price-per-lesson">592 грн/заняття</p>
-                        <p class="subscription-save">Економія 200 грн</p>
+                        <p class="price-per-lesson" data-i18n="packages.rate592">592 грн/заняття</p>
+                        <p class="subscription-save" data-i18n="packages.saving">Економія 200 грн</p>
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>24 космічних заняття</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.lessons24">24 космічних заняття</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Навчальні матеріали</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.materials">Навчальні матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Підтримка викладачів</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.support">Підтримка викладачів</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Додаткові матеріали</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.extra">Додаткові матеріали</span>
                         </div>
                     </div>
-                    <button class="subscription-button" onclick="selectSubscription(24, 14200)">Обрати абонемент</button>
+                    <button class="subscription-button" onclick="selectSubscription(24, 14200)" data-i18n="packages.choose">Обрати абонемент</button>
                 </div>
                 <div class="subscription-card" data-price="28800" data-lessons="48">
-                    <div class="subscription-badge">Максимальний</div>
+                    <div class="subscription-badge" data-i18n="packages.maximum">Максимальний</div>
                     <div class="subscription-header">
-                        <h3>Абонемент на 48 занять</h3>
+                        <h3 data-i18n="packages.48">Абонемент на 48 занять</h3>
                         <div class="subscription-price">
                             <span class="price-amount">28 800</span>
-                            <span class="price-currency">грн</span>
+                            <span class="price-currency" data-i18n="packages.currency">грн</span>
                         </div>
-                        <p class="price-per-lesson">600 грн/заняття</p>
+                        <p class="price-per-lesson" data-i18n="packages.rate600">600 грн/заняття</p>
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>48 космічних занять</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.lessons48">48 космічних занять</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Навчальні матеріали</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.materials">Навчальні матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Підтримка викладачів</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.support">Підтримка викладачів</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Додаткові матеріали</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.extra">Додаткові матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Індивідуальні консультації</span>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <span data-i18n="packages.consultation">Індивідуальні консультації</span>
                         </div>
                     </div>
-                    <button class="subscription-button" onclick="selectSubscription(48, 28800)">Обрати абонемент</button>
+                    <button class="subscription-button" onclick="selectSubscription(48, 28800)" data-i18n="packages.choose">Обрати абонемент</button>
                 </div>
             </div>
         </div>
@@ -241,21 +254,21 @@
     <section id="testimonials" class="testimonials">
         <div class="container">
             <div class="testimonials-header">
-                <h2>Понад 5 000 задоволених учнів та батьків</h2>
-                <p class="testimonials-subtitle">
+                <h2 data-i18n="reviews.title">Понад 5 000 задоволених учнів та батьків</h2>
+                <p class="testimonials-subtitle" data-i18n="reviews.description">
                     Відгуки від батьків, які допоможуть вам переконатися в ефективності наших занять.
                 </p>
             </div>
             <div class="testimonials-grid">
                 <article class="testimonial-card">
                     <div class="testimonial-top">
-                        <div class="testimonial-avatar avatar-1">ВК</div>
+                        <div class="testimonial-avatar avatar-1" data-i18n="reviews.initials1">ВК</div>
                         <div>
-                            <h3 class="testimonial-name">Вікторія Кравчук</h3>
-                            <p class="testimonial-meta">мама Марка, 8 років</p>
+                            <h3 class="testimonial-name" data-i18n="reviews.name1">Вікторія Кравчук</h3>
+                            <p class="testimonial-meta" data-i18n="reviews.meta1">мама Марка, 8 років</p>
                         </div>
                     </div>
-                    <p class="testimonial-text">
+                    <p class="testimonial-text" data-i18n="reviews.text1">
                         Навчання у Smart Garden School стало для нас великим відкриттям. Син нарешті полюбив математику 
                         і сам просить додаткові завдання. Подобається, що уроки проходять у формі гри, а викладачі 
                         завжди на зв’язку та підтримують дитину.
@@ -264,13 +277,13 @@
 
                 <article class="testimonial-card">
                     <div class="testimonial-top">
-                        <div class="testimonial-avatar avatar-2">СМ</div>
+                        <div class="testimonial-avatar avatar-2" data-i18n="reviews.initials2">СМ</div>
                         <div>
-                            <h3 class="testimonial-name">Софія Москаленко</h3>
-                            <p class="testimonial-meta">мама Анни, 10 років</p>
+                            <h3 class="testimonial-name" data-i18n="reviews.name2">Софія Москаленко</h3>
+                            <p class="testimonial-meta" data-i18n="reviews.meta2">мама Анни, 10 років</p>
                         </div>
                     </div>
-                    <p class="testimonial-text">
+                    <p class="testimonial-text" data-i18n="reviews.text2">
                         Донька почала швидше читати і впевненіше відповідати на уроках у школі. Особливо ціную 
                         індивідуальний підхід: викладач бачить сильні сторони дитини і м’яко підсилює те, що ще треба 
                         підтягнути. Відчувається системність і продуманість кожного заняття.
@@ -279,13 +292,13 @@
 
                 <article class="testimonial-card">
                     <div class="testimonial-top">
-                        <div class="testimonial-avatar avatar-3">ЛК</div>
+                        <div class="testimonial-avatar avatar-3" data-i18n="reviews.initials3">ЛК</div>
                         <div>
-                            <h3 class="testimonial-name">Левко Кравченко</h3>
-                            <p class="testimonial-meta">тато Олега, 7 років</p>
+                            <h3 class="testimonial-name" data-i18n="reviews.name3">Левко Кравченко</h3>
+                            <p class="testimonial-meta" data-i18n="reviews.meta3">тато Олега, 7 років</p>
                         </div>
                     </div>
-                    <p class="testimonial-text">
+                    <p class="testimonial-text" data-i18n="reviews.text3">
                         Дитина з нетерпінням чекає кожного онлайн-уроку. Мені подобається прозора комунікація: 
                         після занять отримуємо короткий звіт та рекомендації, що можна попрактикувати вдома. 
                         Бачимо реальний прогрес уже за перший місяць.
@@ -300,29 +313,29 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2>Про Smart Garden School</h2>
-                    <p>Ми - інноваційна онлайн школа, де кожен учень стає космонавтом знань. Ми віримо, що кожна дитина має всередині свій сад розуму й талантів. І завдання освіти не просто навчити, а допомогти цьому саду розквітнути.</p>
+                    <h2 data-i18n="about.title">Про Smart Garden School</h2>
+                    <p data-i18n="about.description">Ми - інноваційна онлайн школа, де кожен учень стає космонавтом знань. Ми віримо, що кожна дитина має всередині свій сад розуму й талантів. І завдання освіти не просто навчити, а допомогти цьому саду розквітнути.</p>
                     <div class="features">
                         <div class="feature">
-                            <i class="fas fa-rocket"></i>
-                            <span>Інноваційні методики навчання</span>
+                            <i aria-hidden="true" class="fas fa-rocket"></i>
+                            <span data-i18n="about.methods">Інноваційні методики навчання</span>
                         </div>
                         <div class="feature">
-                            <i class="fas fa-star"></i>
-                            <span>Досвідчені викладачі</span>
+                            <i aria-hidden="true" class="fas fa-star"></i>
+                            <span data-i18n="about.teachers">Досвідчені викладачі</span>
                         </div>
                         <div class="feature">
-                            <i class="fas fa-moon"></i>
-                            <span>Гнучкий графік занять</span>
+                            <i aria-hidden="true" class="fas fa-moon"></i>
+                            <span data-i18n="about.schedule">Гнучкий графік занять</span>
                         </div>
                         <div class="feature">
-                            <i class="fas fa-satellite"></i>
-                            <span>Підтримка навчальних матеріалів</span>
+                            <i aria-hidden="true" class="fas fa-satellite"></i>
+                            <span data-i18n="about.resources">Підтримка навчальних матеріалів</span>
                         </div>
                     </div>
                 </div>
                 <div class="about-image">
-                    <img src="logo.svg" alt="Smart Garden School Logo Large" class="logo-large-image">
+                    <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-large-image" width="300" height="300" loading="lazy">
                 </div>
             </div>
         </div>
@@ -331,101 +344,102 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2>Оберіть напрямок і заповніть форму, щоб залишити заявку на пробний урок</h2>
+            <h2 data-i18n="contact.title">Оберіть напрямок і заповніть форму, щоб залишити заявку на пробний урок</h2>
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Зв'яжіться з нами</h3>
+                    <h3 data-i18n="contact.heading">Зв'яжіться з нами</h3>
                     <div class="contact-item">
-                        <i class="fas fa-satellite"></i>
-                        <span>schoolsmartgarden@gmail.com</span>
+                        <i aria-hidden="true" class="fas fa-satellite"></i>
+                        <a href="mailto:schoolsmartgarden@gmail.com">schoolsmartgarden@gmail.com</a>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Космічний простір, Україна</span>
+                        <i aria-hidden="true" class="fas fa-map-marker-alt"></i>
+                        <span data-i18n="contact.location">Космічний простір, Україна</span>
                     </div>
                 </div>
                 <form class="contact-form" id="applicationForm" action="https://formspree.io/f/mwpgvwdk" method="POST">
                     <div class="form-group">
-                        <label for="name">Ваше ім’я та прізвище*</label>
-                        <input type="text" id="name" name="name" required>
+                        <label for="name" data-i18n="form.name">Ваше ім’я та прізвище*</label>
+                        <input type="text" id="name" name="name" autocomplete="name" minlength="2" placeholder="Ім’я та прізвище" data-i18n-placeholder="form.namePlaceholder" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required>
+                        <label for="email" data-i18n="form.email">Email *</label>
+                        <input type="email" id="email" name="email" autocomplete="email" placeholder="name@example.com" data-i18n-placeholder="form.emailPlaceholder" required>
                     </div>
                     <div class="form-group">
-                        <label for="course">Обрати курс*</label>
+                        <label for="course" data-i18n="form.course">Обрати курс*</label>
                         <select id="course" name="course" required>
-                            <option value="">Оберіть курс</option>
-                            <option value="mental-arithmetic">Ментальна арифметика</option>
-                            <option value="speed-reading">Швидкочитання</option>
-                            <option value="school-preparation">Підготовка до школи</option>
+                            <option value="" data-i18n="form.coursePlaceholder">Оберіть курс</option>
+                            <option value="mental-arithmetic" data-i18n="courses.mental">Ментальна арифметика</option>
+                            <option value="speed-reading" data-i18n="courses.reading">Швидкочитання</option>
+                            <option value="school-preparation" data-i18n="courses.preparation">Підготовка до школи</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="subscription">Обрати абонемент або пробний урок *</label>
+                        <label for="subscription" data-i18n="form.package">Обрати абонемент або пробний урок *</label>
                         <select id="subscription" name="subscription" required>
-                            <option value="">Оберіть варіант</option>
-                            <option value="trial-lesson">Перший пробний урок</option>
-                            <option value="12-lessons">Абонемент на 12 занять</option>
-                            <option value="24-lessons">Абонемент на 24 заняття</option>
-                            <option value="48-lessons">Абонемент на 48 занять</option>
+                            <option value="" data-i18n="form.packagePlaceholder">Оберіть варіант</option>
+                            <option value="trial-lesson" data-i18n="form.trial">Перший пробний урок</option>
+                            <option value="12-lessons" data-i18n="packages.12">Абонемент на 12 занять</option>
+                            <option value="24-lessons" data-i18n="packages.24">Абонемент на 24 заняття</option>
+                            <option value="48-lessons" data-i18n="packages.48">Абонемент на 48 занять</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="message">Додаткова інформація</label>
-                        <textarea id="message" name="message" rows="4"></textarea>
+                        <label for="message" data-i18n="form.message">Додаткова інформація</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Що нам варто знати про вашу дитину?" data-i18n-placeholder="form.messagePlaceholder"></textarea>
                     </div>
-                    <input type="hidden" name="_subject" value="Нова заявка на навчання - Smart Garden School">
+                    <input type="hidden" name="_subject" data-i18n-value="form.subject" value="Нова заявка на навчання - Smart Garden School">
                     <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_format" value="plain">
                     <button type="submit" class="submit-button">
-                        <span>Відправити заявку</span>
-                        <i class="fas fa-rocket"></i>
+                        <span data-i18n="form.submit">Відправити заявку</span>
+                        <i aria-hidden="true" class="fas fa-rocket"></i>
                     </button>
                 </form>
             </div>
         </div>
     </section>
 
+    </main>
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="logo">
-                        <img src="logo.svg" alt="Smart Garden School Logo" class="logo-image">
+                        <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
                         <span class="school-name">Smart Garden School</span>
                     </div>
-                    <p>Космічна освіта для розумних дітей</p>
+                    <p data-i18n="footer.description">Космічна освіта для розумних дітей</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Космічні посилання</h4>
+                    <h4 data-i18n="footer.links">Космічні посилання</h4>
                     <ul>
-                        <li><a href="#home">Головна</a></li>
-                        <li><a href="#courses">Курси</a></li>
-                        <li><a href="#subscriptions">Абонементи</a></li>
-                        <li><a href="#testimonials">Відгуки</a></li>
-                        <li><a href="#about">Про нас</a></li>
-                        <li><a href="#contact">Контакти</a></li>
+                        <li><a href="#home" data-i18n="nav.home">Головна</a></li>
+                        <li><a href="#courses" data-i18n="nav.courses">Курси</a></li>
+                        <li><a href="#subscriptions" data-i18n="nav.subscriptions">Абонементи</a></li>
+                        <li><a href="#testimonials" data-i18n="nav.testimonials">Відгуки</a></li>
+                        <li><a href="#about" data-i18n="nav.about">Про нас</a></li>
+                        <li><a href="#contact" data-i18n="nav.contact">Контакти</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Соціальні мережі</h4>
+                    <h4 data-i18n="footer.social">Соціальні мережі</h4>
                     <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61584277782860" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/smartgardenschool?igsh=eWUyY2JoeGRocnZ6&utm_source=qr" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                        <a href="https://api.whatsapp.com/send/?phone=4915156424980&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61584277782860" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/smartgardenschool?igsh=eWUyY2JoeGRocnZ6&utm_source=qr" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" class="fab fa-instagram"></i></a>
+                        <a href="https://api.whatsapp.com/send/?phone=4915156424980&text&type=phone_number&app_absent=0" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Smart Garden School. Всі права захищені.</p>
+                <p data-i18n="footer.copyright">&copy; 2025 Smart Garden School. Всі права захищені.</p>
             </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script src="script.js"></script>
+    <script src="i18n.js" defer></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
