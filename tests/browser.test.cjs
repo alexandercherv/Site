@@ -239,7 +239,7 @@ test('localization still works when browser storage is unavailable', async () =>
     await page.close();
 });
 
-test('garden palette and static illustration render across the landing page', async () => {
+test('garden palette, paper cards and storybook illustration render across the landing page', async () => {
     const page = await newPage();
     await page.goto(baseURL);
     const theme = await page.evaluate(() => {
@@ -249,18 +249,64 @@ test('garden palette and static illustration render across the landing page', as
             text: style(document.body).color,
             header: style(document.querySelector('.header')).backgroundColor,
             button: style(document.querySelector('.cta-button')).backgroundColor,
+            paper: style(document.querySelector('.course-card')).backgroundColor,
+            roundedHeading: style(document.querySelector('h1')).fontFamily,
+            cardCorners: parseFloat(style(document.querySelector('.course-card')).borderTopLeftRadius),
             illustration: document.querySelector('.garden-illustration').getBoundingClientRect().width,
             legacyDecoration: document.querySelectorAll('.planet, .rocket, .stars, .floating-characters').length,
             gradientBackgrounds: Array.from(document.querySelectorAll('*')).filter(element => style(element).backgroundImage.includes('gradient')).length,
         };
     });
-    assert.equal(theme.canvas, 'rgb(237, 241, 237)');
+    assert.equal(theme.canvas, 'rgb(248, 244, 233)');
     assert.equal(theme.text, 'rgb(36, 59, 50)');
     assert.equal(theme.header, 'rgb(245, 246, 241)');
     assert.equal(theme.button, 'rgb(66, 101, 84)');
+    assert.equal(theme.paper, 'rgb(251, 245, 232)');
+    assert.match(theme.roundedHeading, /ui-rounded|Trebuchet/);
+    assert.ok(theme.cardCorners >= 24);
     assert.ok(theme.illustration > 250);
     assert.equal(theme.legacyDecoration, 0);
     assert.equal(theme.gradientBackgrounds, 0);
+    await page.close();
+});
+
+test('storybook artwork loads with reserved dimensions and stays clear of text at every viewport', async () => {
+    const page = await newPage({ reducedMotion: 'reduce' });
+    await page.goto(baseURL);
+    for (const language of languages) {
+        await selectLanguage(page, language);
+        for (const width of [320, 375, 768, 1024, 1440]) {
+            await page.setViewportSize({ width, height: 900 });
+            const pictures = page.locator('.garden-illustration, .garden-divider img');
+            for (const picture of await pictures.all()) {
+                await picture.scrollIntoViewIfNeeded();
+                await picture.evaluate(image => image.decode());
+            }
+            const layout = await page.evaluate(() => {
+                const overlaps = (a, b) => a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
+                const copy = Array.from(document.querySelectorAll('h1, h2, h3, p, .hero-stats, button, input, select, textarea'))
+                    .filter(element => element.getBoundingClientRect().height > 0)
+                    .map(element => element.getBoundingClientRect());
+                return {
+                    overflow: document.documentElement.scrollWidth > window.innerWidth,
+                    pictures: Array.from(document.querySelectorAll('.garden-illustration, .garden-divider img')).map(image => ({
+                        loaded: image.complete && image.naturalWidth > 0,
+                        dimensions: Math.abs(Number(image.getAttribute('width')) / Number(image.getAttribute('height')) - image.naturalWidth / image.naturalHeight) < .001,
+                        emptyAlt: image.alt === '' && Boolean(image.closest('[aria-hidden="true"]')),
+                        overlapsCopy: copy.some(rect => overlaps(image.getBoundingClientRect(), rect)),
+                    })),
+                };
+            });
+            assert.equal(layout.overflow, false, `${language} ${width}px: no horizontal overflow`);
+            assert.equal(layout.pictures.length, 3);
+            assert.ok(layout.pictures.every(image => image.loaded && image.dimensions && image.emptyAlt), `${language} ${width}px: images load with correct dimensions and decorative semantics`);
+            assert.ok(layout.pictures.every(image => !image.overlapsCopy), `${language} ${width}px: artwork has its own space`);
+            if (language === 'uk' && [375, 1440].includes(width)) {
+                await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+                await page.screenshot({ path: path.join(artifacts, `storybook-${width}.png`), fullPage: true });
+            }
+        }
+    }
     await page.close();
 });
 

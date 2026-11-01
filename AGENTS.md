@@ -3,7 +3,7 @@
 - `index.html`: public landing page. Keep Ukrainian fallback text and attributes synchronized with `i18n.js`; browser tests also check the no-JavaScript page.
 - `i18n.js`: canonical Ukrainian, English, German and Russian strings, including metadata and form feedback.
 - `script.js`: persisted language preference, keyboard-accessible language dropdown, navigation and form behavior.
-- `styles.css`: restrained garden theme with shared sage, cream and forest colors. Keep the book/sprout illustration static, preserve desktop package hover and reduced-motion safeguards, and keep `logo.svg` unchanged.
+- `styles.css`: picture-book garden theme with the shared warm paper canvas, sage/forest controls and ochre/coral accents. `images/storybook-garden.webp` and `images/storybook-border.webp` are static decorative paintings; keep them in their own layout spaces, preserve desktop package hover and reduced-motion safeguards, and keep `logo.svg` unchanged.
 - `tests`: Node checks and Playwright browser regressions. Mock the external application endpoint; never send test applications or email.
 - `CNAME`: existing GitHub Pages domain. Do not change hosting, DNS or Cloudflare settings as part of frontend work.
 

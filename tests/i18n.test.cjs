@@ -65,6 +65,8 @@ test('garden copy and decoration replace space references in every language', ()
     for (const language of languages) assert.doesNotMatch(Object.values(messages[language]).join(' '), spaceCopy, language);
     assert.doesNotMatch(html, spaceCopy);
     assert.doesNotMatch(html, /class="[^"]*(?:planet|rocket|stars|character|brainy|smart-puma)/);
-    assert.match(html, /class="garden-illustration"/);
+    assert.match(html, /<img class="garden-illustration" src="images\/storybook-garden\.webp" srcset="images\/storybook-garden-small\.webp 600w, images\/storybook-garden\.webp 1200w" sizes="[^"]+" alt="" width="\d+" height="\d+" decoding="async" fetchpriority="high">/);
+    assert.match(html, /src="images\/storybook-border\.webp" alt="" width="\d+" height="\d+" loading="lazy" decoding="async"/);
+    assert.doesNotMatch(html, /<svg class="garden-illustration"/);
     assert.match(html, /src="logo.svg"/);
 });
