@@ -6,7 +6,7 @@ The language dropdown switches all landing-page text, navigation, form labels/pl
 
 The compact language menu shows each language's native name and the current selection. It supports arrow keys, Home/End, Enter/Space, Escape, outside click and normal Tab navigation. The responsive navigation menu also supports keyboard navigation and Escape.
 
-The picture-book garden uses a warm paper canvas, sage and forest controls, cream cards, rounded headings and small ochre/coral accents. A painted tree and outdoor learning nook welcome families in the hero, with matching garden details in two reserved section edges. The transparent WebP artwork stays static and clear of text and form controls; explicit image dimensions reserve its space, and below-fold details load lazily. The official `logo.svg` stays unchanged. Only desktop package cards grow modestly on hover or keyboard focus, with touch and reduced-motion safeguards.
+The picture-book orchard uses a leafy green canvas (`#e7efcf`), forest controls (`#28633f` / `#1e5032`), dark green text (`#1f412e`), amber courses, a warm soil pricing bed and pond-colored reviews. A huge transparent apple tree grows from the hero hill; on small screens it sits beneath the copy. Painted roots connect all three packages on desktop, becoming a vertical root system on mobile. Pricing content stays opaque above the roots. Twelve small hand-drawn garden and learning icons recur in headings, course cards, features and sparse decorative details. Artwork stays static, explicit image dimensions reserve space, and the official `logo.svg` stays unchanged. Only desktop package cards grow modestly on hover or keyboard focus, with touch and reduced-motion safeguards.
 
 Application requests use the existing Formspree endpoint. Errors preserve form values and offer an explicit email link; they never report unconfirmed delivery as success.
 
@@ -14,7 +14,8 @@ Application requests use the existing Formspree endpoint. Errors preserve form v
 - `i18n.js`: canonical translation strings.
 - `script.js`: language, menu, navigation and form behavior.
 - `styles.css`: layout and visual styling.
-- `images/storybook-garden.webp` (1200×960) and `images/storybook-garden-small.webp` (600×480): responsive hero painting; `images/storybook-border.webp` (1536×512): matching garden edges. All three preserve transparency.
+- `images/orchard-apple-tree.webp` (1200×1427) and `images/orchard-apple-tree-small.webp` (600×714): responsive transparent hero tree; `images/storybook-border.webp` (1536×512): matching garden edges.
+- `images/garden-icons/`: twelve lightweight decorative SVGs. The pricing root paths are inline SVG in `index.html`, with the mobile root connections in `styles.css`.
 - [Local verification](tests/README.md): preview, automated checks and screenshots.
 - [Application form setup](EMAIL_SETUP.md): the existing delivery integration and verification limits.
 - [Logo documentation](LOGO_README.md): retained school artwork.

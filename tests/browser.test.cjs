@@ -239,13 +239,15 @@ test('localization still works when browser storage is unavailable', async () =>
     await page.close();
 });
 
-test('garden palette, paper cards and storybook illustration render across the landing page', async () => {
+test('saturated orchard palette, distinct planted cards and integrated apple tree render', async () => {
     const page = await newPage();
     await page.goto(baseURL);
     const theme = await page.evaluate(() => {
         const style = element => getComputedStyle(element);
         return {
             canvas: style(document.body).backgroundColor,
+            fields: ['courses', 'subscriptions', 'testimonials', 'about', 'contact'].map(name => style(document.querySelector(`.${name}`)).backgroundColor),
+            courses: Array.from(document.querySelectorAll('.course-card')).map(element => style(element).backgroundColor),
             text: style(document.body).color,
             header: style(document.querySelector('.header')).backgroundColor,
             button: style(document.querySelector('.cta-button')).backgroundColor,
@@ -257,11 +259,13 @@ test('garden palette, paper cards and storybook illustration render across the l
             gradientBackgrounds: Array.from(document.querySelectorAll('*')).filter(element => style(element).backgroundImage.includes('gradient')).length,
         };
     });
-    assert.equal(theme.canvas, 'rgb(248, 244, 233)');
-    assert.equal(theme.text, 'rgb(36, 59, 50)');
-    assert.equal(theme.header, 'rgb(245, 246, 241)');
-    assert.equal(theme.button, 'rgb(66, 101, 84)');
-    assert.equal(theme.paper, 'rgb(251, 245, 232)');
+    assert.equal(theme.canvas, 'rgb(231, 239, 207)');
+    assert.equal(theme.text, 'rgb(31, 65, 46)');
+    assert.equal(theme.header, 'rgb(216, 230, 187)');
+    assert.equal(theme.button, 'rgb(40, 99, 63)');
+    assert.equal(theme.paper, 'rgb(220, 233, 183)');
+    assert.equal(new Set(theme.fields).size, 5);
+    assert.equal(new Set(theme.courses).size, 3);
     assert.match(theme.roundedHeading, /ui-rounded|Trebuchet/);
     assert.ok(theme.cardCorners >= 24);
     assert.ok(theme.illustration > 250);
@@ -270,7 +274,7 @@ test('garden palette, paper cards and storybook illustration render across the l
     await page.close();
 });
 
-test('storybook artwork loads with reserved dimensions and stays clear of text at every viewport', async () => {
+test('orchard artwork loads with reserved dimensions and keeps copy readable at every viewport', async () => {
     const page = await newPage({ reducedMotion: 'reduce' });
     await page.goto(baseURL);
     for (const language of languages) {
@@ -291,20 +295,70 @@ test('storybook artwork loads with reserved dimensions and stays clear of text a
                     overflow: document.documentElement.scrollWidth > window.innerWidth,
                     pictures: Array.from(document.querySelectorAll('.garden-illustration, .garden-divider img')).map(image => ({
                         loaded: image.complete && image.naturalWidth > 0,
-                        dimensions: Math.abs(Number(image.getAttribute('width')) / Number(image.getAttribute('height')) - image.naturalWidth / image.naturalHeight) < .001,
+                        dimensions: Math.abs(Number(image.getAttribute('width')) / Number(image.getAttribute('height')) * image.naturalHeight - image.naturalWidth) <= 1,
                         emptyAlt: image.alt === '' && Boolean(image.closest('[aria-hidden="true"]')),
                         overlapsCopy: copy.some(rect => overlaps(image.getBoundingClientRect(), rect)),
+                        hero: image.classList.contains('orchard-tree'),
                     })),
                 };
             });
             assert.equal(layout.overflow, false, `${language} ${width}px: no horizontal overflow`);
             assert.equal(layout.pictures.length, 3);
             assert.ok(layout.pictures.every(image => image.loaded && image.dimensions && image.emptyAlt), `${language} ${width}px: images load with correct dimensions and decorative semantics`);
-            assert.ok(layout.pictures.every(image => !image.overlapsCopy), `${language} ${width}px: artwork has its own space`);
+            assert.ok(layout.pictures.filter(image => !image.hero).every(image => !image.overlapsCopy), `${language} ${width}px: border artwork stays clear of copy`);
+            const hero = await page.locator('.hero-content').boundingBox();
+            const tree = await page.locator('.hero-image').boundingBox();
+            assert.ok(width > 768 ? hero.x + hero.width <= tree.x + 2 : hero.y + hero.height <= tree.y + 24, `${language} ${width}px: hero tree stays beside or beneath the copy`);
             if (language === 'uk' && [375, 1440].includes(width)) {
                 await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-                await page.screenshot({ path: path.join(artifacts, `storybook-${width}.png`), fullPage: true });
+                await page.screenshot({ path: path.join(artifacts, `orchard-${width}.png`), fullPage: true });
             }
+        }
+    }
+    await page.close();
+});
+
+test('garden icon kit and pricing roots remain decorative and connected across layouts', async () => {
+    const page = await newPage({ reducedMotion: 'reduce' });
+    await page.goto(baseURL);
+    const icons = page.locator('img.garden-icon');
+    for (const icon of await icons.all()) {
+        await icon.scrollIntoViewIfNeeded();
+        await icon.evaluate(image => image.decode());
+    }
+    const iconState = await icons.evaluateAll(images => ({
+        unique: new Set(images.map(image => image.getAttribute('src'))).size,
+        valid: images.every(image => image.complete && image.naturalWidth > 0 && image.alt === '' && (image.getAttribute('aria-hidden') === 'true' || image.closest('[aria-hidden="true"]'))),
+    }));
+    assert.equal(iconState.unique, 12);
+    assert.equal(iconState.valid, true);
+    assert.equal(await page.locator('.course-icon img').count(), 3);
+    assert.equal(await page.locator('.feature img').count(), 4);
+    assert.equal(await page.locator('.subscription-feature img').count(), 12);
+    for (const width of [320, 375, 768, 1024, 1440]) {
+        await page.setViewportSize({ width, height: 1000 });
+        const roots = page.locator('.pricing-roots');
+        const cards = page.locator('.subscription-card');
+        const system = await page.locator('.root-system').boundingBox();
+        assert.equal(await roots.isVisible(), width > 768);
+        const state = await cards.evaluateAll(elements => elements.map(card => ({
+            background: getComputedStyle(card).backgroundColor,
+            branch: getComputedStyle(card, '::before').borderTopWidth,
+            rootLeft: card.closest('.root-system').getBoundingClientRect().left,
+            left: card.getBoundingClientRect().left,
+            right: card.getBoundingClientRect().right,
+        })));
+        assert.ok(state.every(card => !card.background.includes('rgba')), 'Root branches stay behind opaque pricing cards');
+        if (width <= 768) assert.ok(state.every(card => parseFloat(card.branch) > 0 && card.left > card.rootLeft + 25), 'Each mobile package connects to the root rail');
+        else {
+            const tree = await page.locator('.orchard-tree').boundingBox();
+            assert.ok(tree.width >= width * .5, 'Apple tree occupies at least half of the desktop hero');
+            assert.ok(system.height > 700, 'Roots span the full pricing bed');
+        }
+        assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+        if ([375, 1440].includes(width)) {
+            await page.locator('#subscriptions').scrollIntoViewIfNeeded();
+            await page.screenshot({ path: path.join(artifacts, `orchard-roots-${width}.png`) });
         }
     }
     await page.close();

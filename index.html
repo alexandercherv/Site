@@ -11,7 +11,7 @@
     <link rel="icon" href="logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20261102-storybook">
+    <link rel="stylesheet" href="styles.css?v=20261102-orchard">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -58,8 +58,14 @@
     <main id="main-content" tabindex="-1">
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="orchard-sky" aria-hidden="true">
+            <img class="sky-sun garden-icon" src="images/garden-icons/sun.svg" alt="" width="80" height="80">
+            <img class="sky-bee garden-icon" src="images/garden-icons/bee.svg" alt="" width="64" height="64">
+            <img class="sky-butterfly garden-icon" src="images/garden-icons/butterfly.svg" alt="" width="64" height="64">
+        </div>
         <div class="hero-container">
             <div class="hero-content">
+                <div class="hero-brand"><img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" aria-hidden="true" width="36" height="36"><span>Smart Garden School</span></div>
                 <h1 data-i18n="hero.title">Вітаємо у Smart Garden School!</h1>
                 <p data-i18n="hero.description">Допомагаємо дітям розвивати мислення — крок за кроком.</p>
                 <div class="hero-stats">
@@ -83,7 +89,7 @@
                 <button class="cta-button" onclick="scrollToForm()" data-i18n="hero.apply">Записатися на заняття</button>
             </div>
             <div class="hero-image" aria-hidden="true">
-                <img class="garden-illustration" src="images/storybook-garden.webp" srcset="images/storybook-garden-small.webp 600w, images/storybook-garden.webp 1200w" sizes="(max-width: 480px) min(310px, calc(100vw - 40px)), (max-width: 768px) min(400px, calc(100vw - 48px)), (max-width: 1200px) calc(49vw - 46px), 540px" alt="" width="1200" height="960" decoding="async" fetchpriority="high">
+                <img class="garden-illustration orchard-tree" src="images/orchard-apple-tree.webp" srcset="images/orchard-apple-tree-small.webp 600w, images/orchard-apple-tree.webp 1200w" sizes="(max-width: 768px) 100vw, 60vw" alt="" width="1200" height="1427" decoding="async" fetchpriority="high">
             </div>
         </div>
     </section>
@@ -91,36 +97,36 @@
     <!-- Courses Section -->
     <section id="courses" class="courses">
         <div class="container">
-            <h2 data-i18n="courses.title">Наші курси</h2>
+            <div class="section-heading"><img class="garden-icon" src="images/garden-icons/flower.svg" alt="" aria-hidden="true" width="64" height="64"><h2 data-i18n="courses.title">Наші курси</h2></div>
             <div class="courses-grid">
                 <div class="course-card">
                     <div class="course-icon">
-                        <i aria-hidden="true" class="fas fa-calculator"></i>
+                        <img class="garden-icon" src="images/garden-icons/abacus.svg" alt="" width="72" height="72" aria-hidden="true">
                     </div>
                     <h3 data-i18n="courses.mental">Ментальна арифметика</h3>
                     <p data-i18n="courses.mentalDescription">Навчимо дитину швидко рахувати подумки й розв’язувати математичні загадки.</p>
                     <div class="course-details">
-                        <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.mentalStudents">150 учнів</span></span>
+                        <span><img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" width="24" height="24" aria-hidden="true"> <span data-i18n="courses.mentalStudents">150 учнів</span></span>
                     </div>
                 </div>
                 <div class="course-card">
                     <div class="course-icon">
-                        <i aria-hidden="true" class="fas fa-book-reader"></i>
+                        <img class="garden-icon" src="images/garden-icons/book.svg" alt="" width="72" height="72" aria-hidden="true">
                     </div>
                     <h3 data-i18n="courses.reading">Швидкочитання</h3>
                     <p data-i18n="courses.readingDescription">Навчимо дитину читати швидше й краще засвоювати прочитане.</p>
                     <div class="course-details">
-                        <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.readingStudents">120 учнів</span></span>
+                        <span><img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" width="24" height="24" aria-hidden="true"> <span data-i18n="courses.readingStudents">120 учнів</span></span>
                     </div>
                 </div>
                 <div class="course-card">
                     <div class="course-icon">
-                        <i aria-hidden="true" class="fas fa-graduation-cap"></i>
+                        <img class="garden-icon" src="images/garden-icons/pencil.svg" alt="" width="72" height="72" aria-hidden="true">
                     </div>
                     <h3 data-i18n="courses.preparation">Підготовка до школи</h3>
                     <p data-i18n="courses.preparationDescription">Допоможемо дитині розвинути навички, потрібні для впевненого старту у школі.</p>
                     <div class="course-details">
-                        <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.preparationStudents">180 учнів</span></span>
+                        <span><img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" width="24" height="24" aria-hidden="true"> <span data-i18n="courses.preparationStudents">180 учнів</span></span>
                     </div>
                 </div>
             </div>
@@ -130,9 +136,27 @@
     <!-- Subscriptions Section -->
     <section id="subscriptions" class="subscriptions">
         <div class="container">
-            <h2 data-i18n="packages.title">Наші абонементи</h2>
+            <div class="section-heading"><img class="garden-icon" src="images/garden-icons/apple.svg" alt="" aria-hidden="true" width="64" height="64"><h2 data-i18n="packages.title">Наші абонементи</h2></div>
             <p class="subscriptions-subtitle" data-i18n="packages.description">Оберіть зручний абонемент для вашої дитини.</p>
-            <div class="subscriptions-grid">
+            <div class="root-system">
+                <img class="root-sprout garden-icon" src="images/garden-icons/sprout.svg" alt="" aria-hidden="true" width="88" height="88">
+                <svg class="pricing-roots" viewBox="0 0 1200 950" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
+                    <path class="soil-line" d="M0 86C170 60 290 109 430 85S690 62 815 87S1070 103 1200 78"/>
+                    <g class="root-main">
+                        <path d="M600 26C588 77 623 111 600 151C565 198 568 218 600 272"/>
+                        <path d="M602 105C521 110 506 146 407 144S242 168 188 222"/>
+                        <path d="M600 122C705 101 735 152 822 148S957 170 1012 222"/>
+                        <path d="M188 205C118 251 145 363 96 438S54 600 83 681C99 739 74 823 35 882"/>
+                        <path d="M1010 210C1088 267 1053 358 1104 438S1151 616 1114 690C1089 760 1148 830 1173 905"/>
+                        <path d="M598 228C550 354 637 443 600 565S581 750 604 925"/>
+                    </g>
+                    <g class="root-fine">
+                        <path d="M443 145L411 102L362 89M407 144L372 184M785 147L829 109L890 106M827 149L862 193"/>
+                        <path d="M108 325L55 310L20 337M99 425L39 472L15 532M79 604L120 658L132 715M83 744L31 755L9 792M1114 450L1161 420L1193 447M1135 585L1183 626L1195 683M1118 730L1074 772L1061 839M1141 826L1187 819"/>
+                        <path d="M594 747L526 796L493 854M602 830L662 861L693 919M594 896L556 930M101 832L142 869L151 924M1127 860L1094 906L1099 940"/>
+                    </g>
+                </svg>
+                <div class="subscriptions-grid">
                 <div class="subscription-card" data-price="160" data-currency="USD" data-lessons="12">
                     <div class="subscription-badge"><span class="subscription-badge-label" data-i18n="packages.popular">Популярний</span></div>
                     <div class="subscription-header">
@@ -145,15 +169,15 @@
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.lessons12">12 занять</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.materials">Навчальні матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.support">Підтримка вчителів</span>
                         </div>
                     </div>
@@ -172,19 +196,19 @@
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.lessons24">24 заняття</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.materials">Навчальні матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.support">Підтримка вчителів</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.extra">Додаткові матеріали</span>
                         </div>
                     </div>
@@ -203,27 +227,28 @@
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.lessons48">48 занять</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.materials">Навчальні матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.support">Підтримка вчителів</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.extra">Додаткові матеріали</span>
                         </div>
                         <div class="subscription-feature">
-                            <i aria-hidden="true" class="fas fa-check-circle"></i>
+                            <img class="garden-icon" src="images/garden-icons/leaf.svg" alt="" aria-hidden="true" width="24" height="24">
                             <span data-i18n="packages.consultation">Індивідуальні консультації</span>
                         </div>
                     </div>
                     <button class="subscription-button" onclick="selectSubscription(48)" data-i18n="packages.choose">Обрати абонемент</button>
+                </div>
                 </div>
             </div>
         </div>
@@ -237,7 +262,7 @@
     <section id="testimonials" class="testimonials">
         <div class="container">
             <div class="testimonials-header">
-                <h2 data-i18n="reviews.title">Понад 5 000 задоволених учнів та батьків</h2>
+                <div class="section-heading"><img class="garden-icon" src="images/garden-icons/bee.svg" alt="" aria-hidden="true" width="64" height="64"><h2 data-i18n="reviews.title">Понад 5 000 задоволених учнів та батьків</h2></div>
                 <p class="testimonials-subtitle" data-i18n="reviews.description">Дізнайтеся, що батьки розповідають про наші заняття та успіхи своїх дітей.</p>
             </div>
             <div class="testimonials-grid">
@@ -282,28 +307,31 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2 data-i18n="about.title">Про Smart Garden School</h2>
+                    <div class="section-heading section-heading-start"><img class="garden-icon" src="images/garden-icons/watering-can.svg" alt="" aria-hidden="true" width="64" height="64"><h2 data-i18n="about.title">Про Smart Garden School</h2></div>
                     <p data-i18n="about.description">Ми — інноваційна онлайн-школа, де діти досліджують світ знань. Плекаємо їхні здібності й таланти, як сад, і допомагаємо їм розквітнути.</p>
                     <div class="features">
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-seedling"></i>
+                            <img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" aria-hidden="true" width="40" height="40">
                             <span data-i18n="about.methods">Інноваційні методики навчання</span>
                         </div>
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-chalkboard-teacher"></i>
+                            <img class="garden-icon" src="images/garden-icons/sun.svg" alt="" aria-hidden="true" width="40" height="40">
                             <span data-i18n="about.teachers">Досвідчені вчителі</span>
                         </div>
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-clock"></i>
+                            <img class="garden-icon" src="images/garden-icons/flower.svg" alt="" aria-hidden="true" width="40" height="40">
                             <span data-i18n="about.schedule">Гнучкий графік занять</span>
                         </div>
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-book-open"></i>
+                            <img class="garden-icon" src="images/garden-icons/book.svg" alt="" aria-hidden="true" width="40" height="40">
                             <span data-i18n="about.resources">Навчальні матеріали та підтримка</span>
                         </div>
                     </div>
                 </div>
                 <div class="about-image">
+                    <img class="about-apple garden-icon" src="images/garden-icons/apple.svg" alt="" aria-hidden="true" width="72" height="72">
+                    <img class="about-pear garden-icon" src="images/garden-icons/pear.svg" alt="" aria-hidden="true" width="72" height="72">
+                    <img class="about-butterfly garden-icon" src="images/garden-icons/butterfly.svg" alt="" aria-hidden="true" width="72" height="72">
                     <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-large-image" width="300" height="300" loading="lazy">
                 </div>
             </div>
@@ -313,9 +341,10 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 data-i18n="contact.title">Оберіть курс і заповніть форму, щоб записатися на пробне заняття</h2>
+            <div class="section-heading"><img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" aria-hidden="true" width="64" height="64"><h2 data-i18n="contact.title">Оберіть курс і заповніть форму, щоб записатися на пробне заняття</h2></div>
             <div class="contact-content">
                 <div class="contact-info">
+                    <div class="contact-garden" aria-hidden="true"><img class="garden-icon" src="images/garden-icons/watering-can.svg" alt="" width="112" height="112"><img class="garden-icon" src="images/garden-icons/flower.svg" alt="" width="80" height="80"></div>
                     <h3 data-i18n="contact.heading">Зв’яжіться з нами</h3>
                     <div class="contact-item">
                         <i aria-hidden="true" class="fas fa-envelope"></i>
