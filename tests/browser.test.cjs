@@ -239,7 +239,7 @@ test('localization still works when browser storage is unavailable', async () =>
     await page.close();
 });
 
-test('saturated orchard palette, distinct planted cards and integrated apple tree render', async () => {
+test('saturated garden palette, distinct planted cards and vector tree render', async () => {
     const page = await newPage();
     await page.goto(baseURL);
     const theme = await page.evaluate(() => {
@@ -274,44 +274,47 @@ test('saturated orchard palette, distinct planted cards and integrated apple tre
     await page.close();
 });
 
-test('orchard artwork loads with reserved dimensions and keeps copy readable at every viewport', async () => {
+test('vector garden artwork stays compact, loaded and clear of copy at every viewport', async () => {
     const page = await newPage({ reducedMotion: 'reduce' });
     await page.goto(baseURL);
     for (const language of languages) {
         await selectLanguage(page, language);
         for (const width of [320, 375, 768, 1024, 1440]) {
             await page.setViewportSize({ width, height: 900 });
-            const pictures = page.locator('.garden-illustration, .garden-divider img');
+            const pictures = page.locator('.garden-illustration, .root-crown img');
             for (const picture of await pictures.all()) {
                 await picture.scrollIntoViewIfNeeded();
                 await picture.evaluate(image => image.decode());
             }
             const layout = await page.evaluate(() => {
-                const overlaps = (a, b) => a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1;
-                const copy = Array.from(document.querySelectorAll('h1, h2, h3, p, .hero-stats, button, input, select, textarea'))
-                    .filter(element => element.getBoundingClientRect().height > 0)
-                    .map(element => element.getBoundingClientRect());
                 return {
                     overflow: document.documentElement.scrollWidth > window.innerWidth,
-                    pictures: Array.from(document.querySelectorAll('.garden-illustration, .garden-divider img')).map(image => ({
+                    pictures: Array.from(document.querySelectorAll('.garden-illustration, .root-crown img')).map(image => ({
                         loaded: image.complete && image.naturalWidth > 0,
                         dimensions: Math.abs(Number(image.getAttribute('width')) / Number(image.getAttribute('height')) * image.naturalHeight - image.naturalWidth) <= 1,
                         emptyAlt: image.alt === '' && Boolean(image.closest('[aria-hidden="true"]')),
-                        overlapsCopy: copy.some(rect => overlaps(image.getBoundingClientRect(), rect)),
-                        hero: image.classList.contains('orchard-tree'),
                     })),
                 };
             });
             assert.equal(layout.overflow, false, `${language} ${width}px: no horizontal overflow`);
-            assert.equal(layout.pictures.length, 3);
+            assert.equal(layout.pictures.length, 2);
             assert.ok(layout.pictures.every(image => image.loaded && image.dimensions && image.emptyAlt), `${language} ${width}px: images load with correct dimensions and decorative semantics`);
-            assert.ok(layout.pictures.filter(image => !image.hero).every(image => !image.overlapsCopy), `${language} ${width}px: border artwork stays clear of copy`);
             const hero = await page.locator('.hero-content').boundingBox();
             const tree = await page.locator('.hero-image').boundingBox();
-            assert.ok(width > 768 ? hero.x + hero.width <= tree.x + 2 : hero.y + hero.height <= tree.y + 24, `${language} ${width}px: hero tree stays beside or beneath the copy`);
-            if (language === 'uk' && [375, 1440].includes(width)) {
+            assert.ok(width > 768 ? hero.x + hero.width <= tree.x : hero.y + hero.height <= tree.y, `${language} ${width}px: garden scene stays beside or beneath the copy`);
+            assert.ok(tree.x >= 0 && tree.x + tree.width <= width && (width > 768 || tree.height <= 350), `${language} ${width}px: art stays contained without a tall mobile band`);
+            const cropped = await page.locator('.hero-image img').evaluateAll(images => images.some(image => {
+                const box = image.getBoundingClientRect();
+                const section = image.closest('.hero').getBoundingClientRect();
+                return box.left < 0 || box.right > document.documentElement.clientWidth || box.top < section.top || box.bottom > section.bottom;
+            }));
+            assert.equal(cropped, false, `${language} ${width}px: vector art is not cropped`);
+            const cardDimensions = await page.locator('.subscription-card').evaluateAll(elements => elements.map(element => ({ width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height })));
+            assert.ok(cardDimensions.every(card => Math.abs(card.width - cardDimensions[0].width) < 1 && Math.abs(card.height - cardDimensions[0].height) < 1), `${language} ${width}px: all three packages have the same resting size`);
+            if (language === 'uk') {
                 await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-                await page.screenshot({ path: path.join(artifacts, `orchard-${width}.png`), fullPage: true });
+                await page.screenshot({ path: path.join(artifacts, `garden-${width}.png`), fullPage: true });
+                await page.screenshot({ path: path.join(artifacts, `garden-hero-${width}.png`) });
             }
         }
     }
@@ -349,16 +352,21 @@ test('garden icon kit and pricing roots remain decorative and connected across l
             right: card.getBoundingClientRect().right,
         })));
         assert.ok(state.every(card => !card.background.includes('rgba')), 'Root branches stay behind opaque pricing cards');
-        if (width <= 768) assert.ok(state.every(card => parseFloat(card.branch) > 0 && card.left > card.rootLeft + 25), 'Each mobile package connects to the root rail');
+        const crown = await page.locator('.root-crown').boundingBox();
+        assert.ok(crown.width >= (width <= 768 ? 110 : 160), 'A substantial tree anchors the pricing roots');
+        assert.ok(crown.y + crown.height < (await cards.first().boundingBox()).y, 'Tree crown stays above the packages');
+        if (width <= 768) {
+            assert.ok(state.every(card => parseFloat(card.branch) > 0 && card.left > card.rootLeft + 25), 'Each mobile package connects to the root rail');
+            const connector = await page.locator('.root-system').evaluate(element => getComputedStyle(element, '::after').borderTopWidth);
+            assert.ok(parseFloat(connector) > 0, 'Tree crown connects to the mobile root rail');
+        }
         else {
-            const tree = await page.locator('.orchard-tree').boundingBox();
-            assert.ok(tree.width >= width * .5, 'Apple tree occupies at least half of the desktop hero');
             assert.ok(system.height > 700, 'Roots span the full pricing bed');
         }
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
-        if ([375, 1440].includes(width)) {
-            await page.locator('#subscriptions').scrollIntoViewIfNeeded();
-            await page.screenshot({ path: path.join(artifacts, `orchard-roots-${width}.png`) });
+        {
+            await page.locator('#subscriptions').evaluate(element => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+            await page.screenshot({ path: path.join(artifacts, `garden-roots-${width}.png`) });
         }
     }
     await page.close();
@@ -404,12 +412,17 @@ test('subscription cards enlarge on hover and keyboard focus without moving thei
     await cards.first().scrollIntoViewIfNeeded();
     const layout = () => cards.evaluateAll(elements => elements.map(element => ({ x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight })));
     const original = await layout();
-    const baseline = [1, 1.05, 1];
+    const baseline = [1, 1, 1];
+    assert.ok(original.every(card => card.width === original[0].width && card.height === original[0].height), 'All packages start at identical dimensions');
+    const dimensions = () => cards.evaluateAll(elements => elements.map(element => ({ width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height })));
+    const restingDimensions = await dimensions();
     assert.deepEqual(await cardScales(cards), baseline);
     for (let index = 0; index < 3; index++) {
         await cards.nth(index).hover();
         await settleCards(cards);
-        assert.deepEqual(await cardScales(cards), baseline.map((scale, item) => item === index ? index === 1 ? 1.08 : 1.05 : scale));
+        assert.deepEqual(await cardScales(cards), baseline.map((scale, item) => item === index ? 1.05 : scale));
+        const growing = (await dimensions())[index];
+        assert.ok(Math.abs(growing.width / restingDimensions[index].width - 1.05) < .001 && Math.abs(growing.height / restingDimensions[index].height - 1.05) < .001, 'Every package grows by the same amount in both dimensions');
         assert.deepEqual(await layout(), original);
     }
     await page.mouse.move(0, 0);
@@ -424,7 +437,7 @@ test('subscription cards enlarge on hover and keyboard focus without moving thei
     for (let index = 0; index < 3; index++) {
         await cards.nth(index).locator('.subscription-button').focus();
         await settleCards(cards);
-        assert.equal((await cardScales(cards))[index], index === 1 ? 1.08 : 1.05);
+        assert.equal((await cardScales(cards))[index], 1.05);
         assert.deepEqual(await layout(), original);
         await cards.nth(index).locator('.subscription-button').press('Enter');
         assert.equal(await page.locator('#subscription').inputValue(), `${[12, 24, 48][index]}-lessons`);
@@ -447,7 +460,7 @@ test('subscription growth respects touch viewports and reduced motion', async ()
     const reducedCards = reduced.locator('.subscription-card');
     await reducedCards.first().hover();
     await reducedCards.last().locator('.subscription-button').focus();
-    assert.deepEqual(await cardScales(reducedCards), [1, 1.05, 1]);
+    assert.deepEqual(await cardScales(reducedCards), [1, 1, 1]);
     assert.ok((await reducedCards.evaluateAll(elements => elements.map(element => getComputedStyle(element).transitionDuration))).every(duration => duration === '0s'));
     await reduced.close();
 });

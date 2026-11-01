@@ -1,135 +1,22 @@
-# 🌱 Smart Garden School - Векторний Логотип
+# Smart Garden School logo
 
-## 📋 Опис
+The garden logo keeps the school's recognizable shield, lightbulb/sunflower, growing leaves and SGS ribbon. Rounded contours and warm garden colors connect it to the picture-book artwork across the website and platform.
 
-Векторний логотип для Smart Garden School, створений згідно з детальними специфікаціями. Логотип має формат SVG з прозорим фоном та співвідношенням сторін 1:1.
+`logo.svg` is a native SVG with a transparent background and a `0 0 500 500` viewBox. SGS lettering is outlined vector geometry, so rendering does not depend on installed fonts. Keep the full square canvas, preserve the 1:1 aspect ratio and do not crop the mark.
 
-## 🎨 Кольорова палітра
+| Role | Color |
+| --- | --- |
+| Forest shield | `#285139` |
+| Dark green outlines and details | `#214a34` |
+| Leaves | `#95bd59` |
+| Honey petals and ribbon | `#e7af32` |
+| Cream lightbulb and petal highlight | `#fbefc9` |
+| Ochre ribbon folds | `#bb7b2e` |
 
-| Елемент | Код кольору | Опис |
-|---------|-------------|------|
-| Зовнішній щит | `#30315D` | Темно-синій |
-| Внутрішній щит | `#3E3F76` | Світло-синій |
-| Білий круг | `#FFFFFF` | Білий |
-| Жовті промені | `#F3C851` | Жовтий |
-| Помаранчевий центр | `#EC9F3A` | Помаранчевий |
-| Зелені листки | `#4EAA47` | Зелений |
+The website's header, footer, about section, favicon and logo demo reference `logo.svg?v=garden-2` to avoid reusing the previous mark from browser cache. Change this version when replacing the artwork. The platform keeps matching copies at `public/logo.svg` and `src/app/icon.svg`. Update all three SVG files together when changing the shared mark.
 
-## 🏗️ Структура логотипу
+Use explicit matching width and height attributes in image markup to reserve layout space:
 
-### Основні елементи:
-1. **Гербовий щит** - подвійна синя заливка
-   - Зовнішня форма: `#30315D`
-   - Внутрішня форма: `#3E3F76` (на 5% менша з усіх боків)
-
-2. **Білий круг** - у верхній половині щита
-   - Діаметр: 36% висоти щита
-   - Колір: `#FFFFFF`
-
-3. **12 жовтих променів** - навколо білого круга
-   - Колір: `#F3C851`
-   - Хвиляста форма
-
-4. **Центральний круг** - всередині білого круга
-   - Діаметр: 22% від білого круга
-   - Колір: `#EC9F3A`
-
-5. **Дві іскри** - ліворуч і праворуч від білого круга
-   - Розмір: 3.5% висоти щита
-   - 4-променеві форми
-   - Колір: `#F3C851`
-   - Позиції: 10-та і 2-га година
-
-6. **Пагінець з листків** - під білим кругом
-   - 3 листки кольору `#4EAA47`
-   - Центральний: краплеподібний (висота 10% щита)
-   - Бічні: симетричні (висота 15%, ширина 12%)
-
-7. **Помаранчева стрічка** - поперек нижньої третини
-   - Колір: `#EC9F3A`
-   - Висота: 14% щита
-   - Ширина: 90-95% щита
-   - Хвости з вирізами під 45°
-
-8. **Текст "SGS"** - на стрічці
-   - Колір: `#FFFFFF`
-   - Шрифт: Poppins ExtraBold (або Montserrat/Fredoka/Baloo 2)
-   - Висота літер: 70-75% висоти стрічки
-   - Трекінг: 0
-
-## 📐 Технічні характеристики
-
-- **Формат**: SVG (векторний)
-- **Розмір**: 400x400px (viewBox)
-- **Співвідношення**: 1:1
-- **Фон**: Прозорий
-- **Масштабування**: Без втрати якості
-- **Оптимізація**: Для веб-використання
-
-## 📁 Файли
-
-- `logo.svg` - Основний векторний логотип
-- `logo-demo.html` - Демонстраційна сторінка
-- `LOGO_README.md` - Цей файл з інструкціями
-
-## 🚀 Використання
-
-### У HTML:
 ```html
-<img src="logo.svg" alt="Smart Garden School Logo" width="200" height="200">
+<img src="logo.svg" alt="Smart Garden School" width="80" height="80">
 ```
-
-### У CSS:
-```css
-.logo {
-    background-image: url('logo.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 200px;
-    height: 200px;
-}
-```
-
-### У React/JSX:
-```jsx
-import logoSrc from './logo.svg';
-
-function Logo() {
-    return <img src={logoSrc} alt="SGS Logo" />;
-}
-```
-
-## 📏 Рекомендовані розміри
-
-| Призначення | Розмір | Використання |
-|-------------|--------|--------------|
-| Фавікон | 16x16px, 32x32px | Браузерні вкладки |
-| Соціальні мережі | 180x180px | Профілі |
-| Веб-сайт | 200x200px | Хедер |
-| Друковані матеріали | 300x300px | Брошури, листівки |
-| Великі формати | 400x400px+ | Баннери, плакати |
-
-## ⚠️ Важливі зауваження
-
-1. **Не змінюйте кольори** - використовуйте тільки вказані коди кольорів
-2. **Зберігайте пропорції** - логотип завжди повинен бути квадратним (1:1)
-3. **Мінімальний розмір** - не зменшуйте нижче 16x16px для збереження читабельності
-4. **Прозорий фон** - не додавайте додаткових фонів
-5. **Не обрізайте** - використовуйте повний логотип без обрізання
-
-## 🎯 Брендинг
-
-Логотип відображає:
-- **Освіту** - через структурований дизайн
-- **Природу** - через зелені листки
-- **Розвиток** - через промені сонця
-- **Професійність** - через гербовий щит
-- **Динаміку** - через помаранчеву стрічку
-
-## 📞 Підтримка
-
-Для питань щодо використання логотипу звертайтеся до команди Smart Garden School.
-
----
-
-*Створено згідно з технічними специфікаціями Smart Garden School*

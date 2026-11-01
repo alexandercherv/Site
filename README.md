@@ -6,7 +6,7 @@ The language dropdown switches all landing-page text, navigation, form labels/pl
 
 The compact language menu shows each language's native name and the current selection. It supports arrow keys, Home/End, Enter/Space, Escape, outside click and normal Tab navigation. The responsive navigation menu also supports keyboard navigation and Escape.
 
-The picture-book orchard uses a leafy green canvas (`#e7efcf`), forest controls (`#28633f` / `#1e5032`), dark green text (`#1f412e`), amber courses, a warm soil pricing bed and pond-colored reviews. A huge transparent apple tree grows from the hero hill; on small screens it sits beneath the copy. Painted roots connect all three packages on desktop, becoming a vertical root system on mobile. Pricing content stays opaque above the roots. Twelve small hand-drawn garden and learning icons recur in headings, course cards, features and sparse decorative details. Artwork stays static, explicit image dimensions reserve space, and the official `logo.svg` stays unchanged. Only desktop package cards grow modestly on hover or keyboard focus, with touch and reduced-motion safeguards.
+The picture-book orchard uses a leafy green canvas (`#e7efcf`), forest controls (`#28633f` / `#1e5032`), dark green text (`#1f412e`), amber courses, a warm soil pricing bed and pond-colored reviews. A native SVG apple tree shares the forest outlines and flat fills of the garden icon kit. It sits with a book, watering can, bee and sun in a contained hero scene beside the copy; on small screens the compact scene follows the main CTA. A larger tree medallion anchors the pricing roots, which connect all three packages on desktop and join a vertical root system on mobile. Pricing content stays opaque above the roots. Twelve small hand-drawn garden and learning icons recur in headings, course cards, features and sparse decorative details. Artwork stays static and explicit image dimensions reserve space. The school logo uses the same garden palette while retaining its shield, lightbulb/sunflower, leaves and SGS ribbon identity. All three package cards have the same initial size in each layout; the middle package is distinguished by its color and recommendation ribbon. Each card grows equally to 1.05 scale on desktop hover or keyboard focus, with no growth on touch screens or under reduced motion.
 
 Application requests use the existing Formspree endpoint. Errors preserve form values and offer an explicit email link; they never report unconfirmed delivery as success.
 
@@ -14,10 +14,10 @@ Application requests use the existing Formspree endpoint. Errors preserve form v
 - `i18n.js`: canonical translation strings.
 - `script.js`: language, menu, navigation and form behavior.
 - `styles.css`: layout and visual styling.
-- `images/orchard-apple-tree.webp` (1200×1427) and `images/orchard-apple-tree-small.webp` (600×714): responsive transparent hero tree; `images/storybook-border.webp` (1536×512): matching garden edges.
+- `images/garden-tree.svg` (500×560): native vector tree used in the hero and pricing medallion. Previous painted WebP sources remain in `images/` but are unused.
 - `images/garden-icons/`: twelve lightweight decorative SVGs. The pricing root paths are inline SVG in `index.html`, with the mobile root connections in `styles.css`.
 - [Local verification](tests/README.md): preview, automated checks and screenshots.
 - [Application form setup](EMAIL_SETUP.md): the existing delivery integration and verification limits.
-- [Logo documentation](LOGO_README.md): retained school artwork.
+- [Logo documentation](LOGO_README.md): canonical vector artwork, palette and usage.
 
 Run `python3 -m http.server 3320 --bind 127.0.0.1` from this directory and open `http://127.0.0.1:3320/` for local review. No compilation is required.

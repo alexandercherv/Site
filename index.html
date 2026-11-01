@@ -8,10 +8,10 @@
     <meta property="og:title" data-i18n-content="meta.title" content="Smart Garden School — Онлайн-навчання для дітей">
     <meta property="og:description" data-i18n-content="meta.description" content="Онлайн-заняття з ментальної арифметики, швидкочитання та підготовки до школи у Smart Garden School. Запишіться на пробне заняття.">
     <meta property="og:locale" content="uk_UA">
-    <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <link rel="icon" href="logo.svg?v=garden-2" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20261102-orchard">
+    <link rel="stylesheet" href="styles.css?v=20261102-vector-garden">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -22,7 +22,7 @@
         <nav class="nav" aria-label="Головна навігація" data-i18n-aria-label="nav.label">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
+                    <img src="logo.svg?v=garden-2" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
                     <span class="school-name">Smart Garden School</span>
                 </div>
                 <ul class="nav-menu" id="navigation-menu">
@@ -58,11 +58,6 @@
     <main id="main-content" tabindex="-1">
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="orchard-sky" aria-hidden="true">
-            <img class="sky-sun garden-icon" src="images/garden-icons/sun.svg" alt="" width="80" height="80">
-            <img class="sky-bee garden-icon" src="images/garden-icons/bee.svg" alt="" width="64" height="64">
-            <img class="sky-butterfly garden-icon" src="images/garden-icons/butterfly.svg" alt="" width="64" height="64">
-        </div>
         <div class="hero-container">
             <div class="hero-content">
                 <div class="hero-brand"><img class="garden-icon" src="images/garden-icons/sprout.svg" alt="" aria-hidden="true" width="36" height="36"><span>Smart Garden School</span></div>
@@ -89,7 +84,11 @@
                 <button class="cta-button" onclick="scrollToForm()" data-i18n="hero.apply">Записатися на заняття</button>
             </div>
             <div class="hero-image" aria-hidden="true">
-                <img class="garden-illustration orchard-tree" src="images/orchard-apple-tree.webp" srcset="images/orchard-apple-tree-small.webp 600w, images/orchard-apple-tree.webp 1200w" sizes="(max-width: 768px) 100vw, 60vw" alt="" width="1200" height="1427" decoding="async" fetchpriority="high">
+                <img class="garden-illustration garden-tree" src="images/garden-tree.svg" alt="" width="500" height="560" decoding="async" fetchpriority="high">
+                <img class="hero-sun garden-icon" src="images/garden-icons/sun.svg" alt="" width="80" height="80">
+                <img class="hero-bee garden-icon" src="images/garden-icons/bee.svg" alt="" width="64" height="64">
+                <img class="hero-book garden-icon" src="images/garden-icons/book.svg" alt="" width="112" height="112">
+                <img class="hero-watering-can garden-icon" src="images/garden-icons/watering-can.svg" alt="" width="96" height="96">
             </div>
         </div>
     </section>
@@ -139,7 +138,7 @@
             <div class="section-heading"><img class="garden-icon" src="images/garden-icons/apple.svg" alt="" aria-hidden="true" width="64" height="64"><h2 data-i18n="packages.title">Наші абонементи</h2></div>
             <p class="subscriptions-subtitle" data-i18n="packages.description">Оберіть зручний абонемент для вашої дитини.</p>
             <div class="root-system">
-                <img class="root-sprout garden-icon" src="images/garden-icons/sprout.svg" alt="" aria-hidden="true" width="88" height="88">
+                <div class="root-crown" aria-hidden="true"><img src="images/garden-tree.svg" alt="" width="500" height="560" loading="lazy" decoding="async"></div>
                 <svg class="pricing-roots" viewBox="0 0 1200 950" preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
                     <path class="soil-line" d="M0 86C170 60 290 109 430 85S690 62 815 87S1070 103 1200 78"/>
                     <g class="root-main">
@@ -254,10 +253,6 @@
         </div>
     </section>
 
-    <div class="garden-divider" aria-hidden="true">
-        <img src="images/storybook-border.webp" alt="" width="1536" height="512" loading="lazy" decoding="async">
-    </div>
-
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
         <div class="container">
@@ -332,7 +327,7 @@
                     <img class="about-apple garden-icon" src="images/garden-icons/apple.svg" alt="" aria-hidden="true" width="72" height="72">
                     <img class="about-pear garden-icon" src="images/garden-icons/pear.svg" alt="" aria-hidden="true" width="72" height="72">
                     <img class="about-butterfly garden-icon" src="images/garden-icons/butterfly.svg" alt="" aria-hidden="true" width="72" height="72">
-                    <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-large-image" width="300" height="300" loading="lazy">
+                    <img src="logo.svg?v=garden-2" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-large-image" width="300" height="300" loading="lazy">
                 </div>
             </div>
         </div>
@@ -399,10 +394,6 @@
         </div>
     </section>
 
-    <div class="garden-divider garden-divider-footer" aria-hidden="true">
-        <img src="images/storybook-border.webp" alt="" width="1536" height="512" loading="lazy" decoding="async">
-    </div>
-
     </main>
     <!-- Footer -->
     <footer class="footer">
@@ -410,7 +401,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="logo">
-                        <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
+                        <img src="logo.svg?v=garden-2" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
                         <span class="school-name">Smart Garden School</span>
                     </div>
                     <p data-i18n="footer.description">Зростаємо разом із вашою дитиною</p>

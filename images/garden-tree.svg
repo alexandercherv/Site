@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="560" viewBox="0 0 500 560" fill="none" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="garden-apple" stroke="#285139" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31 24C22 17 11 23 13 37c1 12 8 21 15 19 3-1 5-1 8 0 8 2 15-9 16-21 1-12-12-17-21-11Z" fill="#d76b45"/>
+      <path d="M31 24c-1-6-2-10 2-15"/>
+      <path d="M33 16c3-8 11-9 17-6-3 8-10 11-17 6Z" fill="#95bd59"/>
+      <path d="M21 29c-3 2-4 6-3 10" stroke="#fbefc9" stroke-width="3"/>
+    </g>
+  </defs>
+  <path d="M53 515C124 484 372 485 447 515C385 545 118 545 53 515Z" fill="#bed58b"/>
+  <g stroke="#285139" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M104 309C64 305 43 272 59 239C29 210 35 169 69 151C53 114 77 80 114 78C122 37 170 23 202 49C233 17 282 23 303 57C341 39 383 57 390 93C432 90 458 127 443 163C476 187 477 228 448 251C460 288 434 320 396 320C369 354 323 353 297 329C264 357 223 351 203 330C166 352 128 340 104 309Z" fill="#95bd59"/>
+    <path d="M69 254C106 277 147 271 166 288C187 311 220 306 247 286C273 316 312 319 338 293C371 313 411 298 446 278C440 306 419 322 396 320C369 354 323 353 297 329C264 357 223 351 203 330C166 352 128 340 104 309C77 306 59 288 55 268" fill="#5b9945" stroke="none"/>
+    <path d="M215 506C235 464 230 419 225 379L173 306C163 291 182 278 193 291L239 339V260C239 245 263 245 263 260L264 351L318 299C332 287 349 305 336 318L275 389C267 431 274 472 294 506C273 498 264 498 250 504C236 499 227 499 215 506Z" fill="#bb7b2e"/>
+    <path d="M250 392C246 430 250 462 251 487M226 500L186 520M279 501L318 519"/>
+    <path d="M106 200C91 182 97 159 120 149C131 173 125 190 106 200Z" fill="#5b9945" stroke-width="3"/>
+    <path d="M107 196L117 157" stroke-width="3"/>
+    <path d="M286 123C281 99 298 82 322 83C319 108 305 121 286 123Z" fill="#5b9945" stroke-width="3"/>
+    <path d="M291 117L314 91" stroke-width="3"/>
+    <path d="M370 216C351 203 353 182 367 168C384 187 387 204 370 216Z" fill="#5b9945" stroke-width="3"/>
+    <path d="M370 211L367 177" stroke-width="3"/>
+  </g>
+  <use href="#garden-apple" transform="translate(98 104) scale(1.2)"/>
+  <use href="#garden-apple" transform="translate(205 53) scale(1.2)"/>
+  <use href="#garden-apple" transform="translate(331 112) scale(1.2)"/>
+  <use href="#garden-apple" transform="translate(142 224) scale(1.2)"/>
+  <use href="#garden-apple" transform="translate(269 215) scale(1.2)"/>
+  <path d="M83 508L79 492M78 501L68 495M83 505L93 497M403 511L406 490M405 501L416 495M404 505L394 498" stroke="#285139" stroke-width="3" stroke-linecap="round"/>
+</svg>

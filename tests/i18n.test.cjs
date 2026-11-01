@@ -65,8 +65,10 @@ test('garden copy and decoration replace space references in every language', ()
     for (const language of languages) assert.doesNotMatch(Object.values(messages[language]).join(' '), spaceCopy, language);
     assert.doesNotMatch(html, spaceCopy);
     assert.doesNotMatch(html, /class="[^"]*(?:planet|rocket|stars|character|brainy|smart-puma)/);
-    assert.match(html, /<img class="garden-illustration orchard-tree" src="images\/orchard-apple-tree\.webp" srcset="images\/orchard-apple-tree-small\.webp 600w, images\/orchard-apple-tree\.webp 1200w" sizes="[^"]+" alt="" width="\d+" height="\d+" decoding="async" fetchpriority="high">/);
-    assert.match(html, /src="images\/storybook-border\.webp" alt="" width="\d+" height="\d+" loading="lazy" decoding="async"/);
+    assert.match(html, /<img class="garden-illustration garden-tree" src="images\/garden-tree\.svg" alt="" width="500" height="560" decoding="async" fetchpriority="high">/);
+    assert.doesNotMatch(html, /images\/orchard-apple-tree[^" ]*\.webp/);
+    assert.doesNotMatch(html, /garden-divider|images\/storybook-border\.webp/);
     assert.doesNotMatch(html, /<svg class="garden-illustration"/);
-    assert.match(html, /src="logo.svg"/);
+    assert.equal(Array.from(html.matchAll(/src="logo\.svg\?v=garden-2"/g)).length, 3);
+    assert.doesNotMatch(html, /src="logo\.svg"/);
 });
