@@ -7,6 +7,10 @@ try { language = normalizeLanguage(localStorage.getItem(languageKey)); } catch {
 
 const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.querySelector('.nav-menu');
+const languageSwitcher = document.querySelector('.language-switcher');
+const languageToggle = document.querySelector('.language-toggle');
+const languageMenu = document.getElementById('language-menu');
+const languageOptions = Array.from(languageMenu.querySelectorAll('[data-language]'));
 const applicationForm = document.getElementById('applicationForm');
 // Native required-field validation remains available when JavaScript is disabled.
 applicationForm.noValidate = true;
@@ -23,10 +27,13 @@ function applyLanguage(nextLanguage, persist = true) {
             element.setAttribute(attribute, t(element.getAttribute(`data-i18n-${attribute}`)));
         });
     });
-    document.querySelector('meta[property="og:locale"]').content = language === 'en' ? 'en_US' : 'uk_UA';
-    document.querySelectorAll('[data-language]').forEach(button => {
-        button.setAttribute('aria-pressed', String(button.dataset.language === language));
+    document.querySelector('meta[property="og:locale"]').content = { uk: 'uk_UA', en: 'en_US', de: 'de_DE', ru: 'ru_RU' }[language];
+    languageOptions.forEach(button => {
+        button.setAttribute('aria-checked', String(button.dataset.language === language));
     });
+    const selectedOption = languageOptions.find(button => button.dataset.language === language);
+    languageToggle.setAttribute('aria-label', `${t('language.label')}: ${selectedOption.querySelector('.language-name').textContent}`);
+    document.querySelector('.language-current').textContent = language.toUpperCase();
     updateMenuLabel();
     renderFeedback();
     if (persist) {
@@ -34,8 +41,51 @@ function applyLanguage(nextLanguage, persist = true) {
     }
 }
 
-document.querySelectorAll('[data-language]').forEach(button => {
-    button.addEventListener('click', () => applyLanguage(button.dataset.language));
+function setLanguageMenuOpen(open, restoreFocus = false, focusIndex) {
+    languageMenu.hidden = !open;
+    languageToggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+        setMenuOpen(false);
+        const index = focusIndex ?? languageOptions.findIndex(button => button.dataset.language === language);
+        languageOptions[index].focus();
+    } else if (restoreFocus) languageToggle.focus();
+}
+
+languageToggle.addEventListener('click', () => setLanguageMenuOpen(languageMenu.hidden));
+languageToggle.addEventListener('keydown', event => {
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    setLanguageMenuOpen(true, false, ['ArrowUp', 'End'].includes(event.key) ? languageOptions.length - 1 : 0);
+});
+languageOptions.forEach(button => {
+    button.addEventListener('click', () => {
+        applyLanguage(button.dataset.language);
+        setLanguageMenuOpen(false, true);
+    });
+});
+languageMenu.addEventListener('keydown', event => {
+    const index = languageOptions.indexOf(document.activeElement);
+    let nextIndex;
+    if (event.key === 'ArrowDown') nextIndex = (index + 1) % languageOptions.length;
+    if (event.key === 'ArrowUp') nextIndex = (index - 1 + languageOptions.length) % languageOptions.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = languageOptions.length - 1;
+    if (nextIndex !== undefined) {
+        event.preventDefault();
+        languageOptions[nextIndex].focus();
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        setLanguageMenuOpen(false, true);
+    }
+    // Return to the trigger before normal Tab navigation moves to the next/previous control.
+    if (event.key === 'Tab') setLanguageMenuOpen(false, true);
+});
+languageSwitcher.addEventListener('focusout', event => {
+    if (!languageSwitcher.contains(event.relatedTarget)) setLanguageMenuOpen(false);
+});
+document.addEventListener('click', event => {
+    if (!languageSwitcher.contains(event.target)) setLanguageMenuOpen(false);
 });
 
 function updateMenuLabel() {
@@ -43,6 +93,7 @@ function updateMenuLabel() {
 }
 
 function setMenuOpen(open, restoreFocus = false) {
+    if (open) setLanguageMenuOpen(false);
     navMenu.classList.toggle('active', open);
     navToggle.classList.toggle('active', open);
     navToggle.setAttribute('aria-expanded', String(open));
@@ -124,9 +175,13 @@ function renderFeedback() {
         const message = document.createElement('p');
         message.textContent = t(feedback.key);
         container.append(message);
-        if (feedback.emailHref) {
+        if (feedback.application) {
             const link = document.createElement('a');
-            link.href = feedback.emailHref;
+            const data = feedback.application;
+            const course = Array.from(document.getElementById('course').options).find(option => option.value === data.course).textContent;
+            const subscription = Array.from(document.getElementById('subscription').options).find(option => option.value === data.subscription).textContent;
+            const body = `${t('form.name')} ${data.name}\n${t('form.email')} ${data.email}\n${t('form.course')} ${course}\n${t('form.package')} ${subscription}\n${t('form.message')}: ${data.message || ''}`;
+            link.href = `mailto:schoolsmartgarden@gmail.com?subject=${encodeURIComponent(t('form.subject'))}&body=${encodeURIComponent(body)}`;
             link.textContent = t('form.emailUs');
             container.append(link);
         }
@@ -180,11 +235,7 @@ applicationForm.addEventListener('submit', async event => {
         applicationForm.reset();
     } catch {
         // Delivery has not succeeded. Keep the form and offer an explicit email action.
-        const body = `${t('form.name')} ${data.name}\nEmail: ${data.email}\n${t('form.course')} ${data.course}\n${t('form.package')} ${data.subscription}\n${t('form.message')}: ${data.message || ''}`;
-        feedback = {
-            type: 'error', key: 'form.failure',
-            emailHref: `mailto:schoolsmartgarden@gmail.com?subject=${encodeURIComponent(t('form.subject'))}&body=${encodeURIComponent(body)}`,
-        };
+        feedback = { type: 'error', key: 'form.failure', application: data };
     } finally {
         clearTimeout(timeout);
         setSubmitting(false);
@@ -193,3 +244,4 @@ applicationForm.addEventListener('submit', async event => {
 });
 
 applyLanguage(language, false);
+languageSwitcher.hidden = false;

@@ -1,12 +1,11 @@
 const assert = require('node:assert/strict');
 const { mkdirSync, writeFileSync } = require('node:fs');
-const { execFileSync } = require('node:child_process');
 const path = require('node:path');
 const { test, before, after } = require('node:test');
+const { languages, messages } = require('../i18n.js');
 const { chromium } = require(process.env.SGS_PLAYWRIGHT_MODULE || 'playwright');
 const baseURL = process.env.SGS_WEBSITE_URL || 'http://127.0.0.1:3320';
-const root = path.join(__dirname, '..');
-const artifacts = path.join(root, 'qa');
+const artifacts = path.join(__dirname, '../qa');
 let browser;
 before(async () => { mkdirSync(artifacts, { recursive: true }); browser = await chromium.launch({ headless: true }); });
 after(async () => { await browser?.close(); });
@@ -18,115 +17,235 @@ async function newPage(options = {}) {
     return page;
 }
 
-test('English translates the complete landing, metadata and form, persists, and preserves entered values', async () => {
-    const page = await newPage();
-    const errors = [];
-    page.on('pageerror', error => errors.push(error.message));
-    await page.goto(baseURL);
-    assert.equal(await page.locator('html').getAttribute('lang'), 'uk');
-    await page.getByRole('button', { name: 'English', exact: true }).click();
-    assert.equal(await page.locator('html').getAttribute('lang'), 'en');
-    assert.match(await page.title(), /Cosmic Learning/);
-    assert.match(await page.locator('meta[name="description"]').getAttribute('content'), /Online mental arithmetic/);
-    assert.equal(await page.locator('meta[property="og:locale"]').getAttribute('content'), 'en_US');
-    assert.doesNotMatch(await page.locator('body').innerText(), /[А-Яа-яІіЇїЄєҐґ]/);
-    assert.equal(await page.getByPlaceholder('First and last name', { exact: true }).count(), 1);
-    assert.equal(await page.locator('.price-amount').allTextContents().then(values => values.map(value => value.trim())).then(JSON.stringify), JSON.stringify(['7 200', '14 200', '28 800']));
-    await page.locator('#name').fill('Test Student');
-    await page.locator('#course').selectOption('speed-reading');
-    await page.getByRole('button', { name: 'Українська', exact: true }).click();
-    assert.equal(await page.locator('#name').inputValue(), 'Test Student');
-    assert.equal(await page.locator('#course').inputValue(), 'speed-reading');
-    await page.getByRole('button', { name: 'English', exact: true }).click();
-    await page.reload();
-    assert.equal(await page.locator('html').getAttribute('lang'), 'en');
-    assert.equal(await page.getByRole('button', { name: 'English', exact: true }).getAttribute('aria-pressed'), 'true');
-    assert.deepEqual(errors, []);
-    await page.screenshot({ path: path.join(artifacts, 'english-desktop.png'), fullPage: true });
-    await page.screenshot({ path: path.join(artifacts, 'english-desktop-hero.png'), fullPage: false });
-    await page.close();
-});
+async function selectLanguage(page, language) {
+    await page.locator('.language-toggle').click();
+    await page.locator(`[data-language="${language}"]`).click();
+}
 
-test('mobile and tablet menu opens once, works with keyboard, and closes after navigation', async () => {
-    const page = await newPage({ viewport: { width: 375, height: 812 }, reducedMotion: 'reduce' });
-    await page.goto(baseURL);
-    await page.getByRole('button', { name: 'English', exact: true }).click();
-    for (const width of [320, 375, 768, 1024]) {
-        await page.setViewportSize({ width, height: 812 });
-        const dimensions = await page.evaluate(() => ({ width: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth }));
-        assert.ok(dimensions.scrollWidth <= dimensions.width, `Horizontal overflow at ${width}: ${JSON.stringify(dimensions)}`);
-        const toggle = page.getByRole('button', { name: 'Open menu', exact: true });
-        await toggle.focus();
-        await page.keyboard.press('Enter');
-        assert.equal(await page.locator('.nav-toggle').getAttribute('aria-expanded'), 'true');
-        assert.equal(await page.locator('#navigation-menu').isVisible(), true);
-        await page.keyboard.press('Escape');
-        assert.equal(await page.locator('.nav-toggle').getAttribute('aria-expanded'), 'false');
-        assert.equal(await toggle.evaluate(element => element === document.activeElement), true);
-    }
-    await page.setViewportSize({ width: 375, height: 812 });
-    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
-    await page.screenshot({ path: path.join(artifacts, 'english-mobile-menu.png'), fullPage: false });
-    await page.locator('#navigation-menu').getByRole('link', { name: 'Contact', exact: true }).click();
-    assert.equal(await page.locator('.nav-toggle').getAttribute('aria-expanded'), 'false');
-    assert.match(page.url(), /#contact$/);
-    const contactTop = await page.locator('#contact').evaluate(element => element.getBoundingClientRect().top);
-    const headerBottom = await page.locator('.header').evaluate(element => element.getBoundingClientRect().bottom);
-    assert.ok(contactTop >= headerBottom - 1, 'Contact heading is hidden by the fixed header');
-    await page.screenshot({ path: path.join(artifacts, 'english-mobile-form.png'), fullPage: false });
-    await page.close();
-});
-
-test('validation and delivery feedback translate; failures retain form values and never claim success', async () => {
-    const page = await newPage({ reducedMotion: 'reduce' });
-    let submissions = 0;
-    await page.route('https://formspree.io/**', async route => {
-        submissions++;
-        await route.fulfill({ status: submissions === 1 ? 503 : 200, headers: { 'access-control-allow-origin': '*' }, json: submissions === 1 ? { error: 'Mock failure' } : { ok: true } });
+for (const language of languages) {
+    test(`${language}: complete landing, metadata, form state and persisted preference`, async () => {
+        const page = await newPage();
+        const errors = [];
+        page.on('pageerror', error => errors.push(error.message));
+        await page.goto(baseURL);
+        assert.equal(await page.locator('html').getAttribute('lang'), 'uk');
+        await page.locator('#name').fill('Test Student');
+        await page.locator('#email').fill('test@example.invalid');
+        await page.locator('#message').fill('Keep this message');
+        await page.locator('#course').selectOption('speed-reading');
+        await page.locator('#subscription').selectOption('24-lessons');
+        await selectLanguage(page, language);
+        assert.equal(await page.locator('html').getAttribute('lang'), language);
+        assert.equal(await page.title(), messages[language]['meta.title']);
+        assert.equal(await page.locator('meta[name="description"]').getAttribute('content'), messages[language]['meta.description']);
+        assert.equal(await page.locator('meta[property="og:title"]').getAttribute('content'), messages[language]['meta.title']);
+        assert.equal(await page.locator('meta[property="og:description"]').getAttribute('content'), messages[language]['meta.description']);
+        assert.equal(await page.locator('meta[property="og:locale"]').getAttribute('content'), { uk: 'uk_UA', en: 'en_US', de: 'de_DE', ru: 'ru_RU' }[language]);
+        const mismatches = await page.evaluate(expected => {
+            const errors = [];
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                if (element.textContent !== expected[element.dataset.i18n]) errors.push(element.dataset.i18n);
+            });
+            for (const attribute of ['placeholder', 'aria-label', 'alt', 'content', 'value']) {
+                document.querySelectorAll(`[data-i18n-${attribute}]`).forEach(element => {
+                    const key = element.getAttribute(`data-i18n-${attribute}`);
+                    if (element.getAttribute(attribute) !== expected[key]) errors.push(key);
+                });
+            }
+            return errors;
+        }, messages[language]);
+        assert.deepEqual(mismatches, []);
+        assert.equal(await page.locator('#name').inputValue(), 'Test Student');
+        assert.equal(await page.locator('#email').inputValue(), 'test@example.invalid');
+        assert.equal(await page.locator('#message').inputValue(), 'Keep this message');
+        assert.equal(await page.locator('#course').inputValue(), 'speed-reading');
+        assert.equal(await page.locator('#subscription').inputValue(), '24-lessons');
+        assert.deepEqual((await page.locator('.price-amount').allTextContents()).map(value => value.trim()), ['7 200', '14 200', '28 800']);
+        assert.equal(await page.locator('.language-toggle').evaluate(element => element === document.activeElement), true);
+        await page.reload();
+        assert.equal(await page.locator('html').getAttribute('lang'), language);
+        assert.equal(await page.locator(`[data-language="${language}"]`).getAttribute('aria-checked'), 'true');
+        assert.equal(await page.locator('.language-current').innerText(), language.toUpperCase());
+        assert.deepEqual(errors, []);
+        await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+        await page.screenshot({ path: path.join(artifacts, `${language}-desktop.png`), fullPage: true });
+        await page.screenshot({ path: path.join(artifacts, `${language}-desktop-hero.png`) });
+        await page.close();
     });
+}
+
+test('language dropdown supports keyboard selection, focus return, outside click and Tab', async () => {
+    const page = await newPage();
     await page.goto(baseURL);
-    await page.getByRole('button', { name: 'English', exact: true }).click();
-    await page.getByRole('button', { name: 'Send application', exact: true }).click();
-    assert.equal(await page.locator('#form-feedback li').count(), 4);
-    assert.match(await page.getByRole('alert').innerText(), /Please enter a valid email address/);
-    assert.equal(submissions, 0);
-    await page.getByRole('button', { name: 'Українська', exact: true }).click();
-    assert.match(await page.getByRole('alert').innerText(), /Оберіть курс/);
-    await page.getByRole('button', { name: 'English', exact: true }).click();
-    await page.locator('#name').fill('Test Student');
-    await page.locator('#email').fill('test@example.invalid');
-    await page.locator('#course').selectOption('mental-arithmetic');
-    await page.locator('#subscription').selectOption('trial-lesson');
-    await page.getByRole('button', { name: 'Send application', exact: true }).click();
-    await page.getByRole('alert').filter({ hasText: 'Your application could not be sent' }).waitFor();
-    assert.equal(await page.locator('#name').inputValue(), 'Test Student');
-    assert.equal(await page.locator('.success-message').count(), 0);
-    assert.match(await page.getByRole('link', { name: 'Email us', exact: true }).getAttribute('href'), /^mailto:schoolsmartgarden@gmail.com/);
-    assert.ok(page.url().startsWith(baseURL));
-    await page.getByRole('button', { name: 'Send application', exact: true }).click();
-    await page.getByRole('status').filter({ hasText: 'Your application was sent successfully' }).waitFor();
-    assert.equal(await page.locator('#name').inputValue(), '');
-    assert.equal(submissions, 2);
+    const toggle = page.locator('.language-toggle');
+    const focusedLanguage = () => page.evaluate(() => document.activeElement.dataset.language);
+    await toggle.focus();
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await focusedLanguage(), 'uk');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await focusedLanguage(), 'en');
+    await page.keyboard.press('End');
+    assert.equal(await focusedLanguage(), 'ru');
+    await page.keyboard.press('Home');
+    assert.equal(await focusedLanguage(), 'uk');
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await focusedLanguage(), 'ru');
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('html').getAttribute('lang'), 'ru');
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+    assert.equal(await toggle.evaluate(element => element === document.activeElement), true);
+    await page.keyboard.press('Space');
+    assert.equal(await focusedLanguage(), 'ru');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.press('Space');
+    assert.equal(await page.locator('html').getAttribute('lang'), 'de');
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await focusedLanguage(), 'ru');
+    await page.keyboard.press('Escape');
+    assert.equal(await toggle.evaluate(element => element === document.activeElement), true);
+    assert.equal(await page.locator('#language-menu').isVisible(), false);
+    await toggle.click();
+    await page.locator('h1').click();
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+    await toggle.click();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.locator('#language-menu').isVisible(), false);
+    assert.equal(await toggle.evaluate(element => element === document.activeElement), false);
+    await toggle.click();
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await page.locator('#language-menu').isVisible(), false);
     await page.close();
 });
+
+test('all languages fit mobile, tablet and desktop; navigation and language menus work together', async () => {
+    const page = await newPage({ reducedMotion: 'reduce' });
+    await page.goto(baseURL);
+    for (const language of languages) {
+        await selectLanguage(page, language);
+        for (const width of [320, 375, 768, 1024, 1180, 1440]) {
+            await page.setViewportSize({ width, height: 812 });
+            const toggle = page.locator('.language-toggle');
+            await toggle.click();
+            const rects = await page.evaluate(() => {
+                const width = document.documentElement.clientWidth;
+                const menu = document.getElementById('language-menu').getBoundingClientRect();
+                const nav = document.querySelector('.nav-actions').getBoundingClientRect();
+                const links = document.querySelector('.nav-menu').getBoundingClientRect();
+                const logo = document.querySelector('.header .logo').getBoundingClientRect();
+                return { width, scrollWidth: document.documentElement.scrollWidth, left: menu.left, right: menu.right, navLeft: nav.left, logoRight: logo.right, linksLeft: links.left, linksRight: links.right };
+            });
+            assert.ok(rects.scrollWidth <= rects.width, `${language} horizontal overflow at ${width}: ${JSON.stringify(rects)}`);
+            assert.ok(rects.left >= 0 && rects.right <= rects.width, `${language} dropdown clipped at ${width}`);
+            assert.ok(rects.logoRight <= rects.navLeft, `${language} header controls overlap at ${width}`);
+            await page.keyboard.press('Escape');
+            if (width > 1100) {
+                assert.ok(rects.logoRight <= rects.linksLeft && rects.linksRight <= rects.navLeft, `${language} navigation overlaps at ${width}: ${JSON.stringify(rects)}`);
+                continue;
+            }
+            const navToggle = page.locator('.nav-toggle');
+            await navToggle.focus();
+            await page.keyboard.press('Enter');
+            assert.equal(await navToggle.getAttribute('aria-expanded'), 'true');
+            assert.equal(await page.locator('#navigation-menu').isVisible(), true);
+            await page.keyboard.press('Escape');
+            assert.equal(await navToggle.getAttribute('aria-expanded'), 'false');
+            assert.equal(await navToggle.evaluate(element => element === document.activeElement), true);
+            await navToggle.click();
+            await toggle.click();
+            assert.equal(await navToggle.getAttribute('aria-expanded'), 'false');
+            assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+            if (width === 375) await page.screenshot({ path: path.join(artifacts, `${language}-mobile-language-menu.png`) });
+            await navToggle.click();
+            assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+            await page.locator('#navigation-menu a[href="#contact"]').click();
+            assert.equal(await navToggle.getAttribute('aria-expanded'), 'false');
+            assert.match(page.url(), /#contact$/);
+            const contactTop = await page.locator('#contact').evaluate(element => element.getBoundingClientRect().top);
+            const headerBottom = await page.locator('.header').evaluate(element => element.getBoundingClientRect().bottom);
+            assert.ok(contactTop >= headerBottom - 1, 'Contact heading is hidden by the fixed header');
+        }
+    }
+    await page.close();
+});
+
+for (const language of languages) {
+    test(`${language}: validation, sending, failure/retry and success feedback`, async () => {
+        const page = await newPage({ reducedMotion: 'reduce' });
+        let submissions = 0;
+        let notifyRequest;
+        const nextRequest = () => new Promise(resolve => { notifyRequest = resolve; });
+        await page.route('https://formspree.io/**', async route => {
+            submissions++;
+            await new Promise(resolve => { notifyRequest(resolve); });
+            await route.fulfill({ status: submissions === 1 ? 503 : 200, headers: { 'access-control-allow-origin': '*' }, json: submissions === 1 ? { error: 'Mock failure' } : { ok: true } });
+        });
+        await page.goto(baseURL);
+        await selectLanguage(page, language);
+        await page.locator('.submit-button').click();
+        assert.equal(await page.locator('#form-feedback li').count(), 4);
+        assert.ok((await page.getByRole('alert').innerText()).includes(messages[language]['form.errorEmail']));
+        assert.equal(submissions, 0);
+        const nextLanguage = languages[(languages.indexOf(language) + 1) % languages.length];
+        await selectLanguage(page, nextLanguage);
+        assert.ok((await page.getByRole('alert').innerText()).includes(messages[nextLanguage]['form.errorCourse']));
+        await selectLanguage(page, language);
+        await page.locator('#name').fill('Test Student');
+        await page.locator('#email').fill('test@example.invalid');
+        await page.locator('#course').selectOption('mental-arithmetic');
+        await page.locator('#subscription').selectOption('trial-lesson');
+        let request = nextRequest();
+        await page.locator('.submit-button').click();
+        let releaseRequest = await request;
+        await page.waitForFunction(() => document.querySelector('.submit-button').disabled);
+        assert.equal(await page.locator('.submit-button span').innerText(), messages[language]['form.sending']);
+        // Switching during an in-flight request retains values and updates the busy label.
+        await selectLanguage(page, nextLanguage);
+        assert.equal(await page.locator('.submit-button span').innerText(), messages[nextLanguage]['form.sending']);
+        await selectLanguage(page, language);
+        releaseRequest();
+        await page.getByRole('alert').filter({ hasText: messages[language]['form.failure'] }).waitFor();
+        assert.equal(await page.locator('#name').inputValue(), 'Test Student');
+        assert.equal(await page.locator('.success-message').count(), 0);
+        assert.match(await page.getByRole('link', { name: messages[language]['form.emailUs'], exact: true }).getAttribute('href'), /^mailto:schoolsmartgarden@gmail.com/);
+        await selectLanguage(page, nextLanguage);
+        const emailHref = await page.getByRole('link', { name: messages[nextLanguage]['form.emailUs'], exact: true }).getAttribute('href');
+        assert.ok(decodeURIComponent(emailHref).includes(messages[nextLanguage]['form.subject']));
+        assert.ok(decodeURIComponent(emailHref).includes(messages[nextLanguage]['courses.mental']));
+        await selectLanguage(page, language);
+        assert.ok(page.url().startsWith(baseURL));
+        request = nextRequest();
+        await page.locator('.submit-button').click();
+        releaseRequest = await request;
+        await page.waitForFunction(() => document.querySelector('.submit-button').disabled);
+        releaseRequest();
+        await page.getByRole('status').filter({ hasText: messages[language]['form.success'] }).waitFor();
+        assert.equal(await page.locator('#name').inputValue(), '');
+        assert.equal(submissions, 2);
+        await page.close();
+    });
+}
 
 test('localization still works when browser storage is unavailable', async () => {
     const page = await newPage();
     await page.addInitScript(() => Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('Storage blocked', 'SecurityError'); } }));
     await page.goto(baseURL);
-    await page.getByRole('button', { name: 'English', exact: true }).click();
-    assert.equal(await page.locator('html').getAttribute('lang'), 'en');
+    for (const language of languages) {
+        await selectLanguage(page, language);
+        assert.equal(await page.locator('html').getAttribute('lang'), language);
+    }
     await page.close();
 });
 
-test('idle decoration has no perpetual animations, blur or DOM churn; records original baseline', async () => {
-    const metrics = async page => page.evaluate(() => ({
+test('idle decoration and language menu have no perpetual animations, blur or DOM churn', async () => {
+    const page = await newPage();
+    await page.goto(baseURL);
+    const metrics = () => page.evaluate(() => ({
         infiniteAnimations: document.getAnimations().filter(animation => animation.effect?.getTiming().iterations === Infinity).length,
         backdropFilters: Array.from(document.querySelectorAll('*')).filter(element => getComputedStyle(element).backdropFilter !== 'none').length,
     }));
-    const page = await newPage();
-    await page.goto(baseURL);
-    const current = await metrics(page);
+    assert.deepEqual(await metrics(), { infiniteAnimations: 0, backdropFilters: 0 });
+    await page.locator('.language-toggle').click();
+    const current = await metrics();
     assert.deepEqual(current, { infiniteAnimations: 0, backdropFilters: 0 });
     await page.evaluate(() => {
         window.qaMutations = 0;
@@ -135,19 +254,6 @@ test('idle decoration has no perpetual animations, blur or DOM churn; records or
     await page.clock.install();
     await page.clock.fastForward(6000);
     assert.equal(await page.evaluate(() => window.qaMutations), 0);
+    writeFileSync(path.join(artifacts, 'rendering-metrics.json'), JSON.stringify(current, null, 2));
     await page.close();
-
-    const baseline = await newPage();
-    await baseline.addInitScript(() => { window.emailjs = { init() {} }; });
-    for (const [file, contentType] of [['index.html', 'text/html'], ['script.js', 'text/javascript'], ['styles.css', 'text/css'], ['logo.svg', 'image/svg+xml']]) {
-        const body = execFileSync('git', ['show', `HEAD:${file}`], { cwd: root });
-        await baseline.route(`${baseURL}/baseline/${file}`, route => route.fulfill({ body, contentType }));
-    }
-    await baseline.goto(`${baseURL}/baseline/index.html`);
-    const original = await metrics(baseline);
-    assert.ok(original.infiniteAnimations > 0);
-    assert.ok(original.backdropFilters > 0);
-    writeFileSync(path.join(artifacts, 'rendering-metrics.json'), JSON.stringify({ original, current }, null, 2));
-    console.log('Rendering baseline:', JSON.stringify({ original, current }));
-    await baseline.close();
 });

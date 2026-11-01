@@ -34,9 +34,18 @@
                     <li><a href="#contact" data-i18n="nav.contact">Контакти</a></li>
                 </ul>
                 <div class="nav-actions">
-                    <div class="language-switcher" role="group" aria-label="Мова сайту" data-i18n-aria-label="language.label">
-                        <button type="button" data-language="uk" aria-label="Українська" aria-pressed="true">UK</button>
-                        <button type="button" data-language="en" aria-label="English" aria-pressed="false">EN</button>
+                    <div class="language-switcher" hidden>
+                        <button class="language-toggle" type="button" aria-label="Мова сайту: Українська" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
+                            <svg class="language-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+                            <span class="language-current" aria-hidden="true">UK</span>
+                            <svg class="language-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+                        </button>
+                        <div class="language-menu" id="language-menu" role="menu" aria-label="Мова сайту" data-i18n-aria-label="language.label" hidden>
+                            <button type="button" role="menuitemradio" data-language="uk" lang="uk" aria-checked="true" tabindex="-1"><span class="language-code" aria-hidden="true">UK</span><span class="language-name">Українська</span><span class="language-check" aria-hidden="true">✓</span></button>
+                            <button type="button" role="menuitemradio" data-language="en" lang="en" aria-checked="false" tabindex="-1"><span class="language-code" aria-hidden="true">EN</span><span class="language-name">English</span><span class="language-check" aria-hidden="true">✓</span></button>
+                            <button type="button" role="menuitemradio" data-language="de" lang="de" aria-checked="false" tabindex="-1"><span class="language-code" aria-hidden="true">DE</span><span class="language-name">Deutsch</span><span class="language-check" aria-hidden="true">✓</span></button>
+                            <button type="button" role="menuitemradio" data-language="ru" lang="ru" aria-checked="false" tabindex="-1"><span class="language-code" aria-hidden="true">RU</span><span class="language-name">Русский</span><span class="language-check" aria-hidden="true">✓</span></button>
+                        </div>
                     </div>
                     <button class="nav-toggle" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="navigation-menu">
                         <span></span><span></span><span></span>

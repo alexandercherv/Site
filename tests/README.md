@@ -21,6 +21,6 @@ If Playwright lives in another local checkout, pass its module explicitly:
 SGS_PLAYWRIGHT_MODULE=/absolute/path/to/node_modules/playwright/index.js node --test tests/browser.test.cjs
 ```
 
-All application requests are intercepted and mocked. The tests never submit applications or send email. They cover both languages, persisted preference, unavailable storage, 320–1024px navigation, validation, failure/retry behavior and static idle rendering. Screenshots and original/current rendering metrics are written to ignored `qa/`.
+All application requests are intercepted and mocked. The tests never submit applications or send email. They cover all four languages, persisted preference, unavailable storage, the language dropdown's keyboard and focus behavior, 320–1440px navigation, validation, failure/retry behavior and static idle rendering. Screenshots and rendering metrics are written to ignored `qa/`.
 
 Language preference uses `localStorage` key `sgs-language`. It is scoped to the website's origin; the separate platform has its own browser storage. Ukrainian remains the HTML/default language. Metadata updates with the selected language in the browser; this change does not add separate language URLs for search engines.

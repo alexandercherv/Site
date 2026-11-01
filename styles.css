@@ -1807,9 +1807,21 @@ html { scrollbar-gutter: stable; }
 section[id] { scroll-margin-top: 110px; }
 .nav-container { gap: 1rem; }
 .nav-actions { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
-.language-switcher { display: flex; gap: .2rem; padding: .2rem; border: 1px solid #78768a; border-radius: .7rem; }
-.language-switcher button { min-width: 34px; min-height: 38px; padding: .3rem; border: 0; border-radius: .45rem; background: transparent; color: white; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
-.language-switcher button[aria-pressed="true"] { background: #fbbf24; color: #17132c; }
+.language-switcher { position: relative; flex-shrink: 0; }
+.language-switcher[hidden], .language-menu[hidden] { display: none; }
+.language-switcher button { font: inherit; color: #f4f1ff; cursor: pointer; }
+.language-switcher .language-toggle { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; padding: .5rem .65rem; border: 1px solid #787096; border-radius: .85rem; background: #1c1733; font-size: .85rem; font-weight: 700; }
+.language-toggle:hover, .language-toggle[aria-expanded="true"] { background: #2c224b; border-color: #c4b5fd; }
+.language-globe { width: 18px; height: 18px; color: #c4b5fd; }
+.language-chevron { width: 12px; height: 12px; color: #fbbf24; }
+.language-toggle[aria-expanded="true"] .language-chevron { transform: rotate(180deg); }
+.language-menu { position: absolute; top: calc(100% + .55rem); right: 0; z-index: 2; min-width: 196px; padding: .4rem; border: 1px solid #6b5a91; border-radius: 1rem; background: #19142c; box-shadow: 0 14px 32px #0007; }
+.language-menu button { display: flex; align-items: center; gap: .6rem; width: 100%; min-height: 44px; padding: .55rem .65rem; border: 0; border-radius: .65rem; background: transparent; font-size: .9rem; text-align: left; }
+.language-menu button:hover, .language-menu button:focus-visible { background: #35274f; }
+.language-menu button[aria-checked="true"] { color: #fbbf24; background: #2b2340; }
+.language-code { min-width: 1.55rem; font-size: .72rem; font-weight: 700; color: #bdb2d9; }
+.language-check { margin-left: auto; visibility: hidden; }
+.language-menu button[aria-checked="true"] .language-check { visibility: visible; }
 .nav-toggle { border: 0; background: transparent; }
 :where(a, button, input, select, textarea):focus-visible { outline: 3px solid #fbbf24; outline-offset: 4px; }
 .skip-link { position: fixed; top: .5rem; left: .5rem; z-index: 2000; padding: .7rem 1rem; border-radius: .5rem; background: #fff; color: #17132c; transform: translateY(-200%); }
