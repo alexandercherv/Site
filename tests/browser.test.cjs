@@ -326,3 +326,65 @@ test('subscription growth respects touch viewports and reduced motion', async ()
     assert.ok((await reducedCards.evaluateAll(elements => elements.map(element => getComputedStyle(element).transitionDuration))).every(duration => duration === '0s'));
     await reduced.close();
 });
+
+test('corner ribbons fit every language and stay clear of package headings', async () => {
+    const page = await newPage();
+    await page.goto(baseURL);
+    for (const language of languages) {
+        await selectLanguage(page, language);
+        for (const width of [320, 375, 768, 1024, 1440]) {
+            await page.setViewportSize({ width, height: 1000 });
+            const cards = await page.locator('.subscription-card').evaluateAll(elements => elements.map(card => {
+                const badge = card.querySelector('.subscription-badge');
+                const label = badge.querySelector('.subscription-badge-label');
+                const range = document.createRange();
+                range.selectNodeContents(label);
+                const text = range.getBoundingClientRect();
+                const clip = badge.getBoundingClientRect();
+                const heading = card.querySelector('h3').getBoundingClientRect();
+                return {
+                    textFits: text.left >= clip.left - .5 && text.right <= clip.right + .5 && text.top >= clip.top - .5 && text.bottom <= clip.bottom + .5,
+                    clearsHeading: text.bottom + 4 <= heading.top,
+                    ribbonWidth: getComputedStyle(label).width,
+                    transform: getComputedStyle(label).transform,
+                    priceTop: card.querySelector('.subscription-price').offsetTop,
+                    buttonTop: card.querySelector('.subscription-button').offsetTop,
+                };
+            }));
+            assert.ok(cards.every(card => card.textFits), `${language} ${width}px: ribbon text must not be clipped`);
+            assert.ok(cards.every(card => card.clearsHeading), `${language} ${width}px: ribbon must not cover a heading`);
+            assert.equal(new Set(cards.map(card => card.ribbonWidth)).size, 1);
+            assert.equal(new Set(cards.map(card => card.transform)).size, 1);
+            assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+            if (width === 1440) {
+                assert.equal(new Set(cards.map(card => card.priceTop)).size, 1, `${language}: prices align`);
+                assert.equal(new Set(cards.map(card => card.buttonTop)).size, 1, `${language}: buttons align`);
+            }
+            if ((language === 'uk' && width === 1440) || (language === 'de' && width === 375)) {
+                await page.evaluate(() => document.getElementById('subscriptions').scrollIntoView({ block: 'start', behavior: 'instant' }));
+                await page.screenshot({ path: path.join(artifacts, `ribbons-${language}-${width}.png`) });
+            }
+        }
+    }
+    await page.close();
+});
+
+test('Ukrainian text and attributes match the canonical copy without JavaScript', async () => {
+    const page = await newPage({ javaScriptEnabled: false });
+    await page.goto(baseURL);
+    const mismatches = await page.evaluate(expected => {
+        const mismatches = [];
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            if (element.textContent !== expected[element.dataset.i18n]) mismatches.push(element.dataset.i18n);
+        });
+        for (const attribute of ['placeholder', 'aria-label', 'alt', 'content', 'value']) {
+            document.querySelectorAll(`[data-i18n-${attribute}]`).forEach(element => {
+                const key = element.getAttribute(`data-i18n-${attribute}`);
+                if (element.getAttribute(attribute) !== expected[key]) mismatches.push(key);
+            });
+        }
+        return mismatches;
+    }, messages.uk);
+    assert.deepEqual(mismatches, []);
+    await page.close();
+});

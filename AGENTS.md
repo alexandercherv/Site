@@ -1,6 +1,6 @@
 # Project map
 
-- `index.html`: public landing page. Keep Ukrainian content as the no-JavaScript default.
+- `index.html`: public landing page. Keep Ukrainian fallback text and attributes synchronized with `i18n.js`; browser tests also check the no-JavaScript page.
 - `i18n.js`: canonical Ukrainian, English, German and Russian strings, including metadata and form feedback.
 - `script.js`: persisted language preference, keyboard-accessible language dropdown, navigation and form behavior.
 - `styles.css`: responsive cosmic design. Keep decorative effects static at idle and respect reduced motion.
