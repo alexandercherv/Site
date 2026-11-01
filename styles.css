@@ -753,14 +753,13 @@ body.menu-open {
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: transform .2s ease, background-color .15s ease, border-color .15s ease;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.subscription-card:hover {
-    transform: translateY(-10px) scale(1.02);
+.subscription-card:is(:hover, :focus-within) {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(251, 191, 36, 0.5);
     box-shadow: 0 20px 40px rgba(251, 191, 36, 0.3);
@@ -772,8 +771,15 @@ body.menu-open {
     transform: scale(1.05);
 }
 
-.subscription-card.featured:hover {
-    transform: translateY(-10px) scale(1.08);
+@media (min-width: 769px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .subscription-card:is(:hover, :focus-within) {
+        transform: scale(1.05);
+        z-index: 1;
+    }
+
+    .subscription-card.featured:is(:hover, :focus-within) {
+        transform: scale(1.08);
+    }
 }
 
 .subscription-badge {
@@ -1841,9 +1847,8 @@ section[id] { scroll-margin-top: 110px; }
 .header, .course-card, .subscription-card, .contact-form, .nav-menu { backdrop-filter: none; }
 .course-card { transition: border-color .15s ease; }
 .course-card:hover { transform: none; }
-.submit-button, .subscription-button, .subscription-card { transition: background-color .15s ease, border-color .15s ease; }
-.submit-button:hover, .subscription-button:hover, .subscription-card:hover { transform: none; }
-.subscription-card.featured:hover { transform: scale(1.05); }
+.submit-button, .subscription-button { transition: background-color .15s ease, border-color .15s ease; }
+.submit-button:hover, .subscription-button:hover { transform: none; }
 
 @media (max-width: 1100px) {
     .nav-container { position: relative; padding: .75rem 1rem; }

@@ -60,7 +60,10 @@ for (const language of languages) {
         assert.equal(await page.locator('#message').inputValue(), 'Keep this message');
         assert.equal(await page.locator('#course').inputValue(), 'speed-reading');
         assert.equal(await page.locator('#subscription').inputValue(), '24-lessons');
-        assert.deepEqual((await page.locator('.price-amount').allTextContents()).map(value => value.trim()), ['7 200', '14 200', '28 800']);
+        assert.deepEqual((await page.locator('.price-amount').allTextContents()).map(value => value.trim()), ['160', '310', '600']);
+        assert.deepEqual((await page.locator('.price-currency').allTextContents()).map(value => value.trim()), ['USD', 'USD', 'USD']);
+        assert.deepEqual(await page.locator('.price-per-lesson').allTextContents(), [12, 24, 48].map(lessons => messages[language][`packages.rate${lessons}`]));
+        assert.deepEqual(await page.locator('.subscription-save').allTextContents(), [24, 48].map(lessons => messages[language][`packages.saving${lessons}`]));
         assert.equal(await page.locator('.language-toggle').evaluate(element => element === document.activeElement), true);
         await page.reload();
         assert.equal(await page.locator('html').getAttribute('lang'), language);
@@ -256,4 +259,70 @@ test('idle decoration and language menu have no perpetual animations, blur or DO
     assert.equal(await page.evaluate(() => window.qaMutations), 0);
     writeFileSync(path.join(artifacts, 'rendering-metrics.json'), JSON.stringify(current, null, 2));
     await page.close();
+});
+
+async function settleCards(cards) {
+    await cards.evaluateAll(elements => Promise.all(elements.flatMap(element => element.getAnimations().map(animation => animation.finished))));
+}
+
+async function cardScales(cards) {
+    return cards.evaluateAll(elements => elements.map(element => {
+        const transform = getComputedStyle(element).transform;
+        return transform === 'none' ? 1 : new DOMMatrixReadOnly(transform).a;
+    }));
+}
+
+test('subscription cards enlarge on hover and keyboard focus without moving their layout', async () => {
+    const page = await newPage();
+    await page.goto(baseURL);
+    const cards = page.locator('.subscription-card');
+    await cards.first().scrollIntoViewIfNeeded();
+    const layout = () => cards.evaluateAll(elements => elements.map(element => ({ x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight })));
+    const original = await layout();
+    const baseline = [1, 1.05, 1];
+    assert.deepEqual(await cardScales(cards), baseline);
+    for (let index = 0; index < 3; index++) {
+        await cards.nth(index).hover();
+        await settleCards(cards);
+        assert.deepEqual(await cardScales(cards), baseline.map((scale, item) => item === index ? index === 1 ? 1.08 : 1.05 : scale));
+        assert.deepEqual(await layout(), original);
+    }
+    await page.mouse.move(0, 0);
+    await settleCards(cards);
+    const bounds = await cards.first().boundingBox();
+    await page.mouse.move(bounds.x + 1, bounds.y + bounds.height / 2);
+    await settleCards(cards);
+    assert.equal(await cards.first().evaluate(element => element.matches(':hover')), true);
+    assert.equal((await cardScales(cards))[0], 1.05);
+    await page.screenshot({ path: path.join(artifacts, 'subscriptions-usd-hover.png') });
+    await page.mouse.move(0, 0);
+    for (let index = 0; index < 3; index++) {
+        await cards.nth(index).locator('.subscription-button').focus();
+        await settleCards(cards);
+        assert.equal((await cardScales(cards))[index], index === 1 ? 1.08 : 1.05);
+        assert.deepEqual(await layout(), original);
+        await cards.nth(index).locator('.subscription-button').press('Enter');
+        assert.equal(await page.locator('#subscription').inputValue(), `${[12, 24, 48][index]}-lessons`);
+        assert.equal(await page.locator('#subscription').evaluate(element => element === document.activeElement), true);
+    }
+    await page.close();
+});
+
+test('subscription growth respects touch viewports and reduced motion', async () => {
+    const mobile = await newPage({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+    await mobile.goto(baseURL);
+    const cards = mobile.locator('.subscription-card');
+    await cards.first().tap({ position: { x: 24, y: 24 } });
+    await settleCards(cards);
+    assert.deepEqual(await cardScales(cards), [1, 1, 1]);
+    assert.ok(await mobile.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+    await mobile.close();
+    const reduced = await newPage({ reducedMotion: 'reduce' });
+    await reduced.goto(baseURL);
+    const reducedCards = reduced.locator('.subscription-card');
+    await reducedCards.first().hover();
+    await reducedCards.last().locator('.subscription-button').focus();
+    assert.deepEqual(await cardScales(reducedCards), [1, 1.05, 1]);
+    assert.ok((await reducedCards.evaluateAll(elements => elements.map(element => getComputedStyle(element).transitionDuration))).every(duration => duration === '0s'));
+    await reduced.close();
 });
