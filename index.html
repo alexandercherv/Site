@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="meta.title">Smart Garden School - Космічне навчання</title>
+    <title data-i18n="meta.title">Smart Garden School — Онлайн-навчання для дітей</title>
     <meta name="description" data-i18n-content="meta.description" content="Онлайн-заняття з ментальної арифметики, швидкочитання та підготовки до школи у Smart Garden School. Запишіться на пробне заняття.">
-    <meta property="og:title" data-i18n-content="meta.title" content="Smart Garden School - Космічне навчання">
+    <meta property="og:title" data-i18n-content="meta.title" content="Smart Garden School — Онлайн-навчання для дітей">
     <meta property="og:description" data-i18n-content="meta.description" content="Онлайн-заняття з ментальної арифметики, швидкочитання та підготовки до школи у Smart Garden School. Запишіться на пробне заняття.">
     <meta property="og:locale" content="uk_UA">
     <link rel="icon" href="logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20261101-ribbons">
+    <link rel="stylesheet" href="styles.css?v=20261102-garden">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -83,53 +83,39 @@
                 <button class="cta-button" onclick="scrollToForm()" data-i18n="hero.apply">Записатися на заняття</button>
             </div>
             <div class="hero-image" aria-hidden="true">
-                <div class="floating-characters">
-                    <div class="character brainy">
-                        <div class="character-body"></div>
-                        <div class="character-eyes"></div>
-                        <div class="character-mouth"></div>
-                        <div class="character-antenna"></div>
-                    </div>
-                    <div class="character smart-puma">
-                        <div class="character-body"></div>
-                        <div class="character-eyes"></div>
-                        <div class="character-mouth"></div>
-                        <div class="character-antenna"></div>
-                    </div>
-                    <div class="character cat-hero">
-                        <div class="character-body"></div>
-                        <div class="character-eyes"></div>
-                        <div class="character-mouth"></div>
-                        <div class="character-cape"></div>
-                    </div>
-                </div>
+                <svg class="garden-illustration" viewBox="0 0 480 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M74 375V230C74 138 149 63 241 63s167 75 167 167v145H74Z" fill="#e2e9de"/>
+                    <path d="M53 376h374" stroke="#ccd7cc" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="99" y="324" width="252" height="38" rx="6" fill="#426554"/>
+                    <path d="M121 332h214v22H121" fill="#f5f6f1"/>
+                    <path d="M134 340h184m-184 7h184" stroke="#ccd7cc" stroke-width="2"/>
+                    <rect x="123" y="289" width="236" height="34" rx="6" fill="#9f864e"/>
+                    <path d="M142 296h200v20H142" fill="#f5f6f1"/>
+                    <path d="M153 303h174m-174 7h174" stroke="#ccd7cc" stroke-width="2"/>
+                    <path d="M124 223c46-13 77-6 117 13 40-19 71-26 117-13v62c-42-10-73-5-117 13-44-18-75-23-117-13v-62Z" fill="#f5f6f1" stroke="#426554" stroke-width="2.5" stroke-linejoin="round"/>
+                    <path d="M241 236v61m-99-57c29-5 53 0 78 10m-78 5c29-5 53 0 78 10m42-15c25-10 49-15 78-10m-78 25c25-10 49-15 78-10" stroke="#ccd7cc" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M242 229v-91" stroke="#426554" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M241 188c-42 0-62-21-61-52 38 0 61 19 61 52Z" fill="#8ba180"/>
+                    <path d="M243 163c0-37 24-57 59-55-3 34-23 54-59 55Z" fill="#426554"/>
+                    <path d="m193 149 47 37m4-25 42-37" stroke="#f5f6f1" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M94 376v-62m0 29c-20-1-29-11-29-26 18 0 29 10 29 26Zm1-13c1-21 13-32 32-31-1 19-12 30-32 31Z" stroke="#8ba180" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M384 376v-80m0 38c-22-1-33-13-32-30 20 0 32 12 32 30Zm1-17c1-24 15-37 37-36-1 22-14 35-37 36Z" stroke="#8ba180" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </div>
-        </div>
-        <div class="planets" aria-hidden="true">
-            <div class="planet planet-1"></div>
-            <div class="planet planet-2"></div>
-            <div class="planet planet-3"></div>
-            <div class="planet planet-4"></div>
-            <div class="planet planet-5"></div>
-        </div>
-        <div class="stars" aria-hidden="true"></div>
-        <div class="rockets" aria-hidden="true">
-            <div class="rocket rocket-1"></div>
-            <div class="rocket rocket-2"></div>
         </div>
     </section>
 
     <!-- Courses Section -->
     <section id="courses" class="courses">
         <div class="container">
-            <h2 data-i18n="courses.title">Наші космічні курси</h2>
+            <h2 data-i18n="courses.title">Наші курси</h2>
             <div class="courses-grid">
                 <div class="course-card">
                     <div class="course-icon">
                         <i aria-hidden="true" class="fas fa-calculator"></i>
                     </div>
                     <h3 data-i18n="courses.mental">Ментальна арифметика</h3>
-                    <p data-i18n="courses.mentalDescription">Разом із Брейні навчимо дитину швидко рахувати подумки й розв’язувати математичні загадки.</p>
+                    <p data-i18n="courses.mentalDescription">Навчимо дитину швидко рахувати подумки й розв’язувати математичні загадки.</p>
                     <div class="course-details">
                         <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.mentalStudents">150 учнів</span></span>
                     </div>
@@ -149,7 +135,7 @@
                         <i aria-hidden="true" class="fas fa-graduation-cap"></i>
                     </div>
                     <h3 data-i18n="courses.preparation">Підготовка до школи</h3>
-                    <p data-i18n="courses.preparationDescription">Допоможемо маленьким космонавтам розвинути навички, потрібні для впевненого старту у школі.</p>
+                    <p data-i18n="courses.preparationDescription">Допоможемо дитині розвинути навички, потрібні для впевненого старту у школі.</p>
                     <div class="course-details">
                         <span><i aria-hidden="true" class="fas fa-users"></i> <span data-i18n="courses.preparationStudents">180 учнів</span></span>
                     </div>
@@ -177,7 +163,7 @@
                     <div class="subscription-features">
                         <div class="subscription-feature">
                             <i aria-hidden="true" class="fas fa-check-circle"></i>
-                            <span data-i18n="packages.lessons12">12 космічних занять</span>
+                            <span data-i18n="packages.lessons12">12 занять</span>
                         </div>
                         <div class="subscription-feature">
                             <i aria-hidden="true" class="fas fa-check-circle"></i>
@@ -204,7 +190,7 @@
                     <div class="subscription-features">
                         <div class="subscription-feature">
                             <i aria-hidden="true" class="fas fa-check-circle"></i>
-                            <span data-i18n="packages.lessons24">24 космічних заняття</span>
+                            <span data-i18n="packages.lessons24">24 заняття</span>
                         </div>
                         <div class="subscription-feature">
                             <i aria-hidden="true" class="fas fa-check-circle"></i>
@@ -235,7 +221,7 @@
                     <div class="subscription-features">
                         <div class="subscription-feature">
                             <i aria-hidden="true" class="fas fa-check-circle"></i>
-                            <span data-i18n="packages.lessons48">48 космічних занять</span>
+                            <span data-i18n="packages.lessons48">48 занять</span>
                         </div>
                         <div class="subscription-feature">
                             <i aria-hidden="true" class="fas fa-check-circle"></i>
@@ -313,19 +299,19 @@
                     <p data-i18n="about.description">Ми — інноваційна онлайн-школа, де діти досліджують світ знань. Плекаємо їхні здібності й таланти, як сад, і допомагаємо їм розквітнути.</p>
                     <div class="features">
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-rocket"></i>
+                            <i aria-hidden="true" class="fas fa-seedling"></i>
                             <span data-i18n="about.methods">Інноваційні методики навчання</span>
                         </div>
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-star"></i>
+                            <i aria-hidden="true" class="fas fa-chalkboard-teacher"></i>
                             <span data-i18n="about.teachers">Досвідчені вчителі</span>
                         </div>
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-moon"></i>
+                            <i aria-hidden="true" class="fas fa-clock"></i>
                             <span data-i18n="about.schedule">Гнучкий графік занять</span>
                         </div>
                         <div class="feature">
-                            <i aria-hidden="true" class="fas fa-satellite"></i>
+                            <i aria-hidden="true" class="fas fa-book-open"></i>
                             <span data-i18n="about.resources">Навчальні матеріали та підтримка</span>
                         </div>
                     </div>
@@ -345,12 +331,12 @@
                 <div class="contact-info">
                     <h3 data-i18n="contact.heading">Зв’яжіться з нами</h3>
                     <div class="contact-item">
-                        <i aria-hidden="true" class="fas fa-satellite"></i>
+                        <i aria-hidden="true" class="fas fa-envelope"></i>
                         <a href="mailto:schoolsmartgarden@gmail.com">schoolsmartgarden@gmail.com</a>
                     </div>
                     <div class="contact-item">
                         <i aria-hidden="true" class="fas fa-map-marker-alt"></i>
-                        <span data-i18n="contact.location">Космічний простір, Україна</span>
+                        <span data-i18n="contact.location">Україна · онлайн</span>
                     </div>
                 </div>
                 <form class="contact-form" id="applicationForm" action="https://formspree.io/f/mwpgvwdk" method="POST">
@@ -390,7 +376,7 @@
                     <input type="hidden" name="_format" value="plain">
                     <button type="submit" class="submit-button">
                         <span data-i18n="form.submit">Надіслати заявку</span>
-                        <i aria-hidden="true" class="fas fa-rocket"></i>
+                        <i aria-hidden="true" class="fas fa-arrow-right"></i>
                     </button>
                 </form>
             </div>
@@ -407,7 +393,7 @@
                         <img src="logo.svg" alt="Логотип Smart Garden School" data-i18n-alt="logo.alt" class="logo-image" width="50" height="50">
                         <span class="school-name">Smart Garden School</span>
                     </div>
-                    <p data-i18n="footer.description">Космічна освіта для розумних дітей</p>
+                    <p data-i18n="footer.description">Зростаємо разом із вашою дитиною</p>
                 </div>
                 <div class="footer-section">
                     <h4 data-i18n="footer.links">Корисні посилання</h4>
@@ -435,7 +421,7 @@
         </div>
     </footer>
 
-    <script src="i18n.js?v=20261101-ribbons" defer></script>
-    <script src="script.js?v=20261101-ribbons" defer></script>
+    <script src="i18n.js?v=20261102-garden" defer></script>
+    <script src="script.js?v=20261102-garden" defer></script>
 </body>
 </html>

@@ -239,6 +239,31 @@ test('localization still works when browser storage is unavailable', async () =>
     await page.close();
 });
 
+test('garden palette and static illustration render across the landing page', async () => {
+    const page = await newPage();
+    await page.goto(baseURL);
+    const theme = await page.evaluate(() => {
+        const style = element => getComputedStyle(element);
+        return {
+            canvas: style(document.body).backgroundColor,
+            text: style(document.body).color,
+            header: style(document.querySelector('.header')).backgroundColor,
+            button: style(document.querySelector('.cta-button')).backgroundColor,
+            illustration: document.querySelector('.garden-illustration').getBoundingClientRect().width,
+            legacyDecoration: document.querySelectorAll('.planet, .rocket, .stars, .floating-characters').length,
+            gradientBackgrounds: Array.from(document.querySelectorAll('*')).filter(element => style(element).backgroundImage.includes('gradient')).length,
+        };
+    });
+    assert.equal(theme.canvas, 'rgb(237, 241, 237)');
+    assert.equal(theme.text, 'rgb(36, 59, 50)');
+    assert.equal(theme.header, 'rgb(245, 246, 241)');
+    assert.equal(theme.button, 'rgb(66, 101, 84)');
+    assert.ok(theme.illustration > 250);
+    assert.equal(theme.legacyDecoration, 0);
+    assert.equal(theme.gradientBackgrounds, 0);
+    await page.close();
+});
+
 test('idle decoration and language menu have no perpetual animations, blur or DOM churn', async () => {
     const page = await newPage();
     await page.goto(baseURL);

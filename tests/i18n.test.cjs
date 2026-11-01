@@ -58,3 +58,13 @@ test('the custom language menu exposes native names and selection semantics', ()
     for (const language of languages) assert.match(html, new RegExp(`role="menuitemradio" data-language="${language}" lang="${language}"`));
     assert.doesNotMatch(html, /<select[^>]*(?:language|lang-select)/);
 });
+
+
+test('garden copy and decoration replace space references in every language', () => {
+    const spaceCopy = /cosmi|cosmo|космі|косм|Weltraum|Kosmi|space-themed|space mission|out-of-this-world|🚀/i;
+    for (const language of languages) assert.doesNotMatch(Object.values(messages[language]).join(' '), spaceCopy, language);
+    assert.doesNotMatch(html, spaceCopy);
+    assert.doesNotMatch(html, /class="[^"]*(?:planet|rocket|stars|character|brainy|smart-puma)/);
+    assert.match(html, /class="garden-illustration"/);
+    assert.match(html, /src="logo.svg"/);
+});
