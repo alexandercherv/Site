@@ -6,6 +6,9 @@ const { languages, messages } = require('../i18n.js');
 const { chromium } = require(process.env.SGS_PLAYWRIGHT_MODULE || 'playwright');
 const baseURL = process.env.SGS_WEBSITE_URL || 'http://127.0.0.1:3320';
 const artifacts = path.join(__dirname, '../qa');
+const exchangeRatesURL = 'https://api.frankfurter.dev/v2/rates?base=UAH&quotes=USD,EUR,RUB';
+const exchangeRates = { USD: 0.0243, EUR: 0.0208, RUB: 1.96 };
+const packageCurrencies = { uk: 'UAH', en: 'USD', de: 'EUR', ru: 'RUB' };
 let browser;
 before(async () => { mkdirSync(artifacts, { recursive: true }); browser = await chromium.launch({ headless: true }); });
 after(async () => { await browser?.close(); });
@@ -14,12 +17,35 @@ async function newPage(options = {}) {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, ...options });
     // Test requests never reach the application delivery service.
     await page.route('https://formspree.io/**', route => route.abort());
+    await page.route('https://api.frankfurter.dev/**', route => {
+        const date = new Date().toISOString().slice(0, 10);
+        return route.fulfill({
+            headers: { 'access-control-allow-origin': '*' },
+            json: Object.entries(exchangeRates).map(([quote, rate]) => ({ base: 'UAH', quote, rate, date })),
+        });
+    });
     return page;
 }
 
 async function selectLanguage(page, language) {
     await page.locator('.language-toggle').click();
     await page.locator(`[data-language="${language}"]`).click();
+}
+
+async function assertPackagePrices(page, language, currency = packageCurrencies[language]) {
+    const rate = currency === 'UAH' ? 1 : exchangeRates[currency];
+    const format = new Intl.NumberFormat(language, { maximumFractionDigits: 2 });
+    const perLesson = messages[language]['packages.perLesson'];
+    const saving = messages[language]['packages.saving'];
+    await page.locator('.price-currency').first().filter({ hasText: currency }).waitFor();
+    assert.deepEqual(await page.locator('.price-currency').allTextContents(), [currency, currency, currency]);
+    assert.deepEqual(await page.locator('.price-amount').allTextContents(), [8000, 15500, 30000].map(total => format.format(total * rate)));
+    assert.deepEqual(await page.locator('.price-per-lesson').allTextContents(), [8000 / 12, 15500 / 24, 30000 / 48].map(amount =>
+        perLesson.replace('{amount}', `${format.format(amount * rate)} ${currency}`)
+    ));
+    assert.deepEqual(await page.locator('.subscription-save').allTextContents(), [500, 2000].map(amount =>
+        saving.replace('{amount}', `${format.format(amount * rate)} ${currency}`)
+    ));
 }
 
 for (const language of languages) {
@@ -60,10 +86,7 @@ for (const language of languages) {
         assert.equal(await page.locator('#message').inputValue(), 'Keep this message');
         assert.equal(await page.locator('#course').inputValue(), 'speed-reading');
         assert.equal(await page.locator('#subscription').inputValue(), '24-lessons');
-        assert.deepEqual((await page.locator('.price-amount').allTextContents()).map(value => value.trim()), ['160', '310', '600']);
-        assert.deepEqual((await page.locator('.price-currency').allTextContents()).map(value => value.trim()), ['USD', 'USD', 'USD']);
-        assert.deepEqual(await page.locator('.price-per-lesson').allTextContents(), [12, 24, 48].map(lessons => messages[language][`packages.rate${lessons}`]));
-        assert.deepEqual(await page.locator('.subscription-save').allTextContents(), [24, 48].map(lessons => messages[language][`packages.saving${lessons}`]));
+        await assertPackagePrices(page, language);
         assert.equal(await page.locator('.language-toggle').evaluate(element => element === document.activeElement), true);
         await page.reload();
         assert.equal(await page.locator('html').getAttribute('lang'), language);
@@ -76,6 +99,44 @@ for (const language of languages) {
         await page.close();
     });
 }
+
+test('the same rates serve each language and persist across reloads', async () => {
+    const page = await newPage();
+    const requests = [];
+    page.on('request', request => {
+        if (request.url().startsWith('https://api.frankfurter.dev/')) requests.push(request.url());
+    });
+    await page.goto(baseURL);
+    await assertPackagePrices(page, 'uk');
+    assert.equal(await page.locator('.pricing-rate-note').isVisible(), false);
+    assert.deepEqual(requests, []);
+    for (const language of ['en', 'de', 'ru', 'uk', 'en']) {
+        await selectLanguage(page, language);
+        await assertPackagePrices(page, language);
+    }
+    assert.deepEqual(requests, [exchangeRatesURL]);
+    await page.reload();
+    await assertPackagePrices(page, 'en');
+    assert.equal(await page.locator('.pricing-rate-note').innerText(), messages.en['packages.converted']);
+    assert.deepEqual(requests, [exchangeRatesURL]);
+    await page.close();
+});
+
+test('a failed rate request keeps UAH prices in the selected language', async () => {
+    const page = await newPage();
+    await page.route(exchangeRatesURL, route => route.fulfill({
+        status: 503,
+        headers: { 'access-control-allow-origin': '*' },
+    }));
+    await page.goto(baseURL);
+    const failedRequest = page.waitForResponse(exchangeRatesURL);
+    await selectLanguage(page, 'de');
+    assert.equal((await failedRequest).status(), 503);
+    await page.locator('.pricing-rate-note').filter({ hasText: messages.de['packages.ratesUnavailable'] }).waitFor();
+    assert.equal(await page.locator('html').getAttribute('lang'), 'de');
+    await assertPackagePrices(page, 'de', 'UAH');
+    await page.close();
+});
 
 test('language dropdown supports keyboard selection, focus return, outside click and Tab', async () => {
     const page = await newPage();
@@ -487,6 +548,7 @@ test('corner ribbons fit every language and stay clear of package headings', asy
                     transform: getComputedStyle(label).transform,
                     priceTop: card.querySelector('.subscription-price').offsetTop,
                     buttonTop: card.querySelector('.subscription-button').offsetTop,
+                    featuresTop: Array.from(card.querySelectorAll('.subscription-feature')).slice(0, 3).map(feature => feature.offsetTop),
                 };
             }));
             assert.ok(cards.every(card => card.textFits), `${language} ${width}px: ribbon text must not be clipped`);
@@ -494,6 +556,9 @@ test('corner ribbons fit every language and stay clear of package headings', asy
             assert.equal(new Set(cards.map(card => card.ribbonWidth)).size, 1);
             assert.equal(new Set(cards.map(card => card.transform)).size, 1);
             assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
+            if (width > 768) {
+                for (const card of cards) assert.deepEqual(card.featuresTop, cards[0].featuresTop, `${language} ${width}px: shared options align`);
+            }
             if (width === 1440) {
                 assert.equal(new Set(cards.map(card => card.priceTop)).size, 1, `${language}: prices align`);
                 assert.equal(new Set(cards.map(card => card.buttonTop)).size, 1, `${language}: buttons align`);
@@ -524,5 +589,6 @@ test('Ukrainian text and attributes match the canonical copy without JavaScript'
         return mismatches;
     }, messages.uk);
     assert.deepEqual(mismatches, []);
+    await assertPackagePrices(page, 'uk');
     await page.close();
 });

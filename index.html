@@ -11,7 +11,7 @@
     <link rel="icon" href="logo.svg?v=garden-2" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20261102-vector-garden">
+    <link rel="stylesheet" href="styles.css?v=20261104-pricing">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -156,15 +156,15 @@
                     </g>
                 </svg>
                 <div class="subscriptions-grid">
-                <div class="subscription-card" data-price="160" data-currency="USD" data-lessons="12">
+                <div class="subscription-card" data-price="8000" data-currency="UAH" data-lessons="12">
                     <div class="subscription-badge"><span class="subscription-badge-label" data-i18n="packages.popular">Популярний</span></div>
                     <div class="subscription-header">
                         <h3 data-i18n="packages.12">Абонемент на 12 занять</h3>
                         <div class="subscription-price">
-                            <span class="price-amount">160</span>
-                            <span class="price-currency" data-i18n="packages.currency">USD</span>
+                            <span class="price-amount">8&nbsp;000</span>
+                            <span class="price-currency">UAH</span>
                         </div>
-                        <p class="price-per-lesson" data-i18n="packages.rate12">≈ 13,33 USD/заняття</p>
+                        <p class="price-per-lesson" data-i18n-price="packages.perLesson">666,67 UAH/заняття</p>
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
@@ -182,16 +182,16 @@
                     </div>
                     <button class="subscription-button" onclick="selectSubscription(12)" data-i18n="packages.choose">Обрати абонемент</button>
                 </div>
-                <div class="subscription-card featured" data-price="310" data-currency="USD" data-lessons="24">
+                <div class="subscription-card featured" data-price="15500" data-currency="UAH" data-lessons="24">
                     <div class="subscription-badge best-value"><span class="subscription-badge-label" data-i18n="packages.recommended">Рекомендуємо</span></div>
                     <div class="subscription-header">
                         <h3 data-i18n="packages.24">Абонемент на 24 заняття</h3>
                         <div class="subscription-price">
-                            <span class="price-amount">310</span>
-                            <span class="price-currency" data-i18n="packages.currency">USD</span>
+                            <span class="price-amount">15&nbsp;500</span>
+                            <span class="price-currency">UAH</span>
                         </div>
-                        <p class="price-per-lesson" data-i18n="packages.rate24">≈ 12,92 USD/заняття</p>
-                        <p class="subscription-save" data-i18n="packages.saving24">Економія 10 USD</p>
+                        <p class="price-per-lesson" data-i18n-price="packages.perLesson">645,83 UAH/заняття</p>
+                        <p class="subscription-save" data-i18n-price="packages.saving">Економія 500 UAH</p>
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
@@ -213,16 +213,16 @@
                     </div>
                     <button class="subscription-button" onclick="selectSubscription(24)" data-i18n="packages.choose">Обрати абонемент</button>
                 </div>
-                <div class="subscription-card" data-price="600" data-currency="USD" data-lessons="48">
+                <div class="subscription-card" data-price="30000" data-currency="UAH" data-lessons="48">
                     <div class="subscription-badge"><span class="subscription-badge-label" data-i18n="packages.maximum">Максимальний</span></div>
                     <div class="subscription-header">
                         <h3 data-i18n="packages.48">Абонемент на 48 занять</h3>
                         <div class="subscription-price">
-                            <span class="price-amount">600</span>
-                            <span class="price-currency" data-i18n="packages.currency">USD</span>
+                            <span class="price-amount">30&nbsp;000</span>
+                            <span class="price-currency">UAH</span>
                         </div>
-                        <p class="price-per-lesson" data-i18n="packages.rate48">12,50 USD/заняття</p>
-                        <p class="subscription-save" data-i18n="packages.saving48">Економія 40 USD</p>
+                        <p class="price-per-lesson" data-i18n-price="packages.perLesson">625 UAH/заняття</p>
+                        <p class="subscription-save" data-i18n-price="packages.saving">Економія 2&nbsp;000 UAH</p>
                     </div>
                     <div class="subscription-features">
                         <div class="subscription-feature">
@@ -251,6 +251,7 @@
                 </div>
             </div>
         </div>
+        <p class="pricing-rate-note" role="status" hidden></p>
     </section>
 
     <!-- Testimonials Section -->
@@ -432,7 +433,8 @@
         </div>
     </footer>
 
-    <script src="i18n.js?v=20261102-garden" defer></script>
-    <script src="script.js?v=20261102-garden" defer></script>
+    <script src="i18n.js?v=20261104-currency" defer></script>
+    <script src="exchange-rates.js?v=20261104-currency" defer></script>
+    <script src="script.js?v=20261104-currency" defer></script>
 </body>
 </html>

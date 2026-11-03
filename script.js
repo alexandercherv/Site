@@ -18,6 +18,44 @@ let submitting = false;
 let feedback = null;
 const t = key => translate(language, key);
 
+const currencyByLanguage = { uk: 'UAH', en: 'USD', de: 'EUR', ru: 'RUB' };
+const priceCards = Array.from(document.querySelectorAll('.subscription-card[data-price]'));
+const basePackagePrice = Number(priceCards[0].dataset.price);
+const basePackageLessons = Number(priceCards[0].dataset.lessons);
+const rateNote = document.querySelector('.pricing-rate-note');
+
+function renderPrices(rates, loading = false) {
+    const requestedCurrency = currencyByLanguage[language];
+    const rate = rates[requestedCurrency];
+    const currency = rate ? requestedCurrency : 'UAH';
+    const number = new Intl.NumberFormat(language, { maximumFractionDigits: 2 });
+    const convert = amount => number.format(amount * (rate ?? 1));
+    for (const card of priceCards) {
+        const total = Number(card.dataset.price);
+        const lessons = Number(card.dataset.lessons);
+        card.querySelector('.price-amount').textContent = convert(total);
+        card.querySelector('.price-currency').textContent = currency;
+        const perLesson = card.querySelector('.price-per-lesson');
+        perLesson.textContent = t(perLesson.dataset.i18nPrice).replace('{amount}', `${convert(total / lessons)} ${currency}`);
+        const saving = card.querySelector('.subscription-save');
+        if (saving) {
+            saving.textContent = t(saving.dataset.i18nPrice).replace('{amount}', `${convert(basePackagePrice * (lessons / basePackageLessons) - total)} ${currency}`);
+        }
+    }
+    rateNote.hidden = requestedCurrency === 'UAH';
+    rateNote.textContent = rateNote.hidden ? '' : t(rate ? 'packages.converted' : loading ? 'packages.ratesLoading' : 'packages.ratesUnavailable');
+}
+
+function updatePrices() {
+    const exchange = window.SGSExchangeRates;
+    const needsRates = language !== 'uk' && !!exchange;
+    renderPrices(needsRates ? exchange.cachedRates() : {}, needsRates);
+    if (needsRates) {
+        // Render in the language still selected when the shared request finishes.
+        void exchange.getRates().then(rates => renderPrices(rates));
+    }
+}
+
 function applyLanguage(nextLanguage, persist = true) {
     language = normalizeLanguage(nextLanguage);
     document.documentElement.lang = language;
@@ -36,6 +74,7 @@ function applyLanguage(nextLanguage, persist = true) {
     document.querySelector('.language-current').textContent = language.toUpperCase();
     updateMenuLabel();
     renderFeedback();
+    updatePrices();
     if (persist) {
         try { localStorage.setItem(languageKey, language); } catch { /* Keep the current session usable. */ }
     }
